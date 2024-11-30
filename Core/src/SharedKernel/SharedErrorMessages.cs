@@ -7,4 +7,6 @@ public static class SharedErrorMessages
 
     public static readonly string FailedResultMustHaveError = "A failed result must have an error.";
     public static readonly string FailedResultMustHaveErrors = "A failed result must have at least one error.";
+
+    public static readonly string IdMustBeGraterThanZero = "Id must be greater than zero.";
 }
