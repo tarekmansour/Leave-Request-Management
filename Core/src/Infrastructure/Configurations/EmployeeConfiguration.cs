@@ -43,7 +43,7 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 
         builder.OwnsOne(x => x.Position).HasData(
             new { EmployeeId = new EmployeeId(1), EmployeePosition.Manager.Value },
-            new { EmployeeId = new EmployeeId(2), EmployeePosition.Employee.Value },
+            new { EmployeeId = new EmployeeId(2), EmployeePosition.HR.Value },
             new { EmployeeId = new EmployeeId(3), EmployeePosition.Employee.Value }
         );
     }
