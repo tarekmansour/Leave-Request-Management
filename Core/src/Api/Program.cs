@@ -1,5 +1,6 @@
 using Api;
 using Application;
+using Asp.Versioning;
 using Infrastructure;
 using Microsoft.OpenApi.Models;
 
@@ -9,9 +10,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1.0);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = new UrlSegmentApiVersionReader();
+})
+.AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services
     .AddApplication()
     .AddInfrastructure();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -21,7 +37,8 @@ builder.Services.AddSwaggerGen(c =>
         Title = "LeaveManagement Api",
         Version = "v1",
         Description = "The Leave Management API is designed to facilitate the management of leave requests within an organization." +
-        "This API provides a comprehensive set of endpoints that allow employees, managers, and HR personnel to efficiently handle various aspects of leave management, including requesting, approving, and tracking leave requests."
+        "This API provides a comprehensive set of endpoints that allow employees, managers, and HR personnel to efficiently handle various aspects of leave management," +
+        "including requesting, approving, and tracking leave requests."
     });
     c.SupportNonNullableReferenceTypes();
     c.EnableAnnotations();

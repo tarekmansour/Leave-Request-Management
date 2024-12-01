@@ -1,6 +1,7 @@
 ﻿using Api.Requests;
 using Application.Commands.CreateLeaveRequest;
 using Application.Dtos;
+using Asp.Versioning;
 using Domain.ValueObjects.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,8 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion(1.0)]
+[Route("api/v{apiVersion:apiVersion}/[controller]")]
 [Produces("application/json")]
 public class LeaveRequestsController : ControllerBase
 {
