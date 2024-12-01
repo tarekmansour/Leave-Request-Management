@@ -29,14 +29,20 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 .HasColumnType("[varchar](100)")
                 .IsRequired();
 
-        builder.OwnsOne(x => x.Position, employeePosition =>
+        builder.OwnsOne(x => x.Position, employeePositionBuilder =>
         {
-            employeePosition.Property(p => p.Value).HasColumnType("[varchar](100)");
+            employeePositionBuilder.Property(p => p.Value).HasColumnType("[varchar](100)");
         });
 
         builder.HasData(
-            new Employee(id: new EmployeeId(1), firstName: "Michel", lastName: "Barry", email: "mBarry@gmail.com", position: EmployeePosition.Manager),
-            new Employee(id: new EmployeeId(2), firstName: "Victor", lastName: "Majory", email: "vMajory@gmail.com", position: EmployeePosition.Employee),
-            new Employee(id: new EmployeeId(3), firstName: "Christophe", lastName: "Garcia", email: "cGarcia@gmail.com", position: EmployeePosition.Employee));
+            new Employee(id: new EmployeeId(1), firstName: "Michel", lastName: "Barry", email: "mBarry@gmail.com"),
+            new Employee(id: new EmployeeId(2), firstName: "Victor", lastName: "Majory", email: "vMajory@gmail.com"),
+            new Employee(id: new EmployeeId(3), firstName: "Christophe", lastName: "Garcia", email: "cGarcia@gmail.com"));
+
+        builder.OwnsOne(x => x.Position).HasData(
+            new { EmployeeId = new EmployeeId(1), EmployeePosition.Manager.Value },
+            new { EmployeeId = new EmployeeId(2), EmployeePosition.Employee.Value },
+            new { EmployeeId = new EmployeeId(3), EmployeePosition.Employee.Value }
+        );
     }
 }

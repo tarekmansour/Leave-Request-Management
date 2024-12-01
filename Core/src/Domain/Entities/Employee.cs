@@ -26,12 +26,11 @@ public sealed class Employee
         Position = position;
     }
 
-    public Employee(EmployeeId id, string firstName, string lastName, string email, EmployeePosition position)
+    public Employee(EmployeeId id, string firstName, string lastName, string email)
     {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Position = position;
     }
 }
