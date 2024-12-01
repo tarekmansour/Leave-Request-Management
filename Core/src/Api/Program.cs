@@ -2,11 +2,9 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = builder.Configuration;
-
 builder.Services.AddControllers();
 builder.Services
-    .AddInfrastructure(configuration);
+    .AddInfrastructure();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

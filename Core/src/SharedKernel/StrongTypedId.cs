@@ -1,4 +1,5 @@
 ﻿namespace SharedKernel;
+
 public abstract record StrongTypedId
 {
     public int Value { get; }

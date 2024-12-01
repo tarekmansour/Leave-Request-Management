@@ -8,13 +8,17 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 {
     public void Configure(EntityTypeBuilder<LeaveRequest> builder)
     {
-        builder.Property(x => x.Id).HasConversion(
-            leaveRequestId => leaveRequestId.Value,
-            value => new LeaveRequestId(value));
-
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        builder.Property(x => x.Id)
+            .HasConversion(
+                leaveRequestId => leaveRequestId.Value,
+                value => new LeaveRequestId(value))
+            .ValueGeneratedOnAdd();
+
+        // Ensure that the SQL Server column is configured to use IDENTITY
+        builder.Property(x => x.Id)
+            .Metadata.SetBeforeSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
 
         builder.HasOne<Employee>()
             .WithMany()
@@ -46,6 +50,7 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
         builder.HasOne<Employee>()
             .WithMany()
             .HasForeignKey(x => x.ApprovedBy)
+            .IsRequired(false)
             .HasConstraintName("FK_LeaveRequest_Employee_Approval")
             .OnDelete(DeleteBehavior.Restrict);
     }
