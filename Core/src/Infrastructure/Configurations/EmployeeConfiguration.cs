@@ -9,8 +9,6 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.ToTable(nameof(Employee));
-
         builder.Property(x => x.Id).HasConversion(
             employeeId => employeeId.Value,
             value => new EmployeeId(value));

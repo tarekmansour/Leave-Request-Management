@@ -8,8 +8,6 @@ public sealed class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
 {
     public void Configure(EntityTypeBuilder<LeaveType> builder)
     {
-        builder.ToTable(nameof(LeaveType));
-
         builder.Property(x => x.Id).HasConversion(
             leaveTypeId => leaveTypeId.Value,
             value => new LeaveTypeId(value));

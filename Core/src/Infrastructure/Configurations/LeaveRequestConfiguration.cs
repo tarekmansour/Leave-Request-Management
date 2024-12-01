@@ -8,8 +8,6 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 {
     public void Configure(EntityTypeBuilder<LeaveRequest> builder)
     {
-        builder.ToTable(nameof(LeaveRequest));
-
         builder.Property(x => x.Id).HasConversion(
             leaveRequestId => leaveRequestId.Value,
             value => new LeaveRequestId(value));
