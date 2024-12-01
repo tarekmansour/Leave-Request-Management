@@ -68,4 +68,44 @@ public class LeaveRequestTests
         newLeaveRequest.Should().Throw<ArgumentException>()
             .WithMessage(LeaveRequestErrorMessages.StartDateShouldNotBeInPast);
     }
+
+    [Fact(DisplayName = "Approve a leave request")]
+    public void Approve_Should_UpdateStatus()
+    {
+        // Arrange
+        var createdLeaveRequest = new LeaveRequest(
+            employeeId: new EmployeeId(3),
+            leaveTypeId: new LeaveTypeId(4),
+            startDate: DateTime.UtcNow.AddDays(10),
+            endDate: DateTime.UtcNow.AddDays(20));
+
+        var managerId = new EmployeeId(1);
+
+        // Act
+        createdLeaveRequest.Approve(managerId);
+
+        // Assert
+        createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
+        createdLeaveRequest.ApprovedBy.Should().Be(managerId);
+    }
+
+    [Fact(DisplayName = "Rehect a leave request")]
+    public void Reject_Should_UpdateStatus()
+    {
+        // Arrange
+        var createdLeaveRequest = new LeaveRequest(
+            employeeId: new EmployeeId(3),
+            leaveTypeId: new LeaveTypeId(4),
+            startDate: DateTime.UtcNow.AddDays(10),
+            endDate: DateTime.UtcNow.AddDays(20));
+
+        var managerId = new EmployeeId(2);
+
+        // Act
+        createdLeaveRequest.Reject(managerId);
+
+        // Assert
+        createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Rejected);
+        createdLeaveRequest.ApprovedBy.Should().Be(managerId);
+    }
 }

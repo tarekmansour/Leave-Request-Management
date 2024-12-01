@@ -38,4 +38,16 @@ public sealed class LeaveRequest
         RequestDate = DateTime.UtcNow;
         Comment = comment;
     }
+
+    public void Approve(EmployeeId approvedBy)
+    {
+        Status = LeaveRequestStatus.Approved;
+        ApprovedBy = approvedBy;
+    }
+
+    public void Reject(EmployeeId approvedBy)
+    {
+        Status = LeaveRequestStatus.Rejected;
+        ApprovedBy = approvedBy;
+    }
 }
