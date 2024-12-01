@@ -50,6 +50,6 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 command.StartDate,
                 command.EndDate);
 
-        return Result<CreatedLeaveRequestDto>.Success(new CreatedLeaveRequestDto(createdLeaveRequestId));
+        return Result<CreatedLeaveRequestDto>.Success(new CreatedLeaveRequestDto(createdLeaveRequestId.Value));
     }
 }

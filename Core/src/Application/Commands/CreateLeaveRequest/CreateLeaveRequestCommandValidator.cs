@@ -7,23 +7,25 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
     public CreateLeaveRequestCommandValidator()
     {
         RuleFor(command => command.EmployeeId)
-            .NotNull()
+            .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEmployeeId)
                 .WithMessage(LeaveRequestErrorMessages.EmployeeIdShouldNotBeNull);
 
         RuleFor(command => command.LeaveTypeId)
-            .NotNull()
+            .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveTypeId)
                 .WithMessage(LeaveRequestErrorMessages.LeaveTypeIdShouldNotBeNull);
 
         RuleFor(command => command.StartDate)
-            .NotNull()
+            .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidStartDate)
                 .WithMessage(LeaveRequestErrorMessages.StartDateShouldNotBeNull);
 
         RuleFor(command => command.EndDate)
-            .NotNull()
+            .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEndDate)
                 .WithMessage(LeaveRequestErrorMessages.EndDateShouldNotBeNull);
+
+        //TODO: validate balance leave according to max days per user
     }
 }
