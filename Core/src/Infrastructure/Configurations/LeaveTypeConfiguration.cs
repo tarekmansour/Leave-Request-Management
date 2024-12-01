@@ -14,6 +14,8 @@ public sealed class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
         builder.Property(x => x.Name)
                 .HasColumnType("[varchar](100)")
                 .IsRequired();

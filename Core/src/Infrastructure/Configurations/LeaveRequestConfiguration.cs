@@ -14,6 +14,8 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
         builder.HasOne<Employee>()
             .WithMany()
             .HasForeignKey(x => x.EmployeeId)
