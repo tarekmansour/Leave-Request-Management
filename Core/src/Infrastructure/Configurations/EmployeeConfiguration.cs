@@ -31,7 +31,9 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 
         builder.OwnsOne(x => x.Position, employeePositionBuilder =>
         {
-            employeePositionBuilder.Property(p => p.Value).HasColumnType("[varchar](100)");
+            employeePositionBuilder.Property(p => p.Value)
+            .HasColumnName("Position")
+            .HasColumnType("[varchar](100)");
         });
 
         builder.HasData(
