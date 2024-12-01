@@ -6,6 +6,7 @@ namespace SharedKernel.Tests;
 public abstract class DatabaseFixture : IDisposable
 {
     protected readonly ApplicationDbContext _dbContext;
+    private bool _disposed = false;
 
     protected DatabaseFixture()
     {
@@ -20,7 +21,23 @@ public abstract class DatabaseFixture : IDisposable
 
     public void Dispose()
     {
-        _dbContext.Database.EnsureDeleted();
-        _dbContext.Dispose();
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                // Dispose managed resources
+                _dbContext.Database.EnsureDeleted();
+                _dbContext.Dispose();
+            }
+
+            // Dispose unmanaged resources here if there are any
+            _disposed = true;
+        }
     }
 }

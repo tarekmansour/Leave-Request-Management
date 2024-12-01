@@ -19,6 +19,20 @@ public partial class CreateLeaveRequestCommandTests
         act.Should().Throw<ArgumentException>();
     }
 
+    [Fact(DisplayName = "new CreateLeaveRequestCommandHandler with null logger")]
+    public void WithNullLogger_Should_ThrowException()
+    {
+        // Arrange & act
+        var act = () => new CreateLeaveRequestCommandHandler(
+            null!,
+            _validator,
+            _clientRepository,
+            _unitOfWork);
+
+        // Assert
+        act.Should().NotThrow();
+    }
+
     [Fact(DisplayName = "new CreateLeaveRequestCommandHandler with null unitOfWork")]
     public void WithNullUnitOfWork_Should_ThrowException()
     {
