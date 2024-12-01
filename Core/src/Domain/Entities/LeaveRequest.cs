@@ -38,4 +38,20 @@ public sealed class LeaveRequest
         RequestDate = DateTime.UtcNow;
         Comment = comment;
     }
+
+    public LeaveRequest(
+        LeaveRequestId id,
+        EmployeeId employeeId,
+        LeaveTypeId leaveTypeId,
+        DateTime startDate,
+        DateTime endDate,
+        string? comment)
+    {
+        Id = id;
+        EmployeeId = employeeId;
+        LeaveTypeId = leaveTypeId;
+        StartDate = startDate;
+        EndDate = endDate;
+        Comment = comment;
+    }
 }

@@ -17,7 +17,8 @@ namespace Infrastructure.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "[varchar](100)", nullable: false),
                     LastName = table.Column<string>(type: "[varchar](100)", nullable: false),
                     Email = table.Column<string>(type: "[varchar](100)", nullable: false),
@@ -32,7 +33,8 @@ namespace Infrastructure.Migrations
                 name: "LeaveTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "[varchar](100)", nullable: false),
                     MaxDaysPerYear = table.Column<int>(type: "int", nullable: false)
                 },
@@ -45,7 +47,8 @@ namespace Infrastructure.Migrations
                 name: "LeaveRequests",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     LeaveTypeId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),

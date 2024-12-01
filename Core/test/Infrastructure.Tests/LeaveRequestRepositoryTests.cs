@@ -27,6 +27,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
     {
         // Arrange
         var leaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(1),
             employeeId: new EmployeeId(2),
             leaveTypeId: new LeaveTypeId(1),
             startDate: DateTime.UtcNow.AddDays(1),
@@ -35,7 +36,6 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
 
         // Act
         var createdLeaveRequestId = await _sut.CreateLeaveRequestAsync(leaveRequest);
-        await _dbContext.SaveChangesAsync();
 
         // Assert
         createdLeaveRequestId.Should().NotBeNull();

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241201112256_Create_Database")]
+    [Migration("20241201122606_Create_Database")]
     partial class Create_Database
     {
         /// <inheritdoc />
@@ -28,7 +28,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -73,7 +76,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApprovedBy")
                         .HasColumnType("int");
@@ -110,7 +116,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.LeaveType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MaxDaysPerYear")
                         .HasColumnType("int");

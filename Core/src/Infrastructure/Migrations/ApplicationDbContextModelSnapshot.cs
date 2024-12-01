@@ -25,7 +25,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -70,7 +73,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.LeaveRequest", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ApprovedBy")
                         .HasColumnType("int");
@@ -107,7 +113,10 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.LeaveType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MaxDaysPerYear")
                         .HasColumnType("int");
