@@ -29,11 +29,14 @@ public sealed class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
                 .HasColumnType("[varchar](100)")
                 .IsRequired();
 
-        builder.Property(x => x.Position).IsRequired();
+        builder.OwnsOne(x => x.Position, employeePosition =>
+        {
+            employeePosition.Property(p => p.Value).HasColumnType("[varchar](100)");
+        });
 
         builder.HasData(
-            new Employee(firstName: "Michel", lastName: "Barry", email: "mBarry@gmail.com", position: EmployeePosition.Manager),
-            new Employee(firstName: "Victor", lastName: "Majory", email: "vMajory@gmail.com", position: EmployeePosition.Employee),
-            new Employee(firstName: "Christophe", lastName: "Garcia", email: "cGarcia@gmail.com", position: EmployeePosition.Employee));
+            new Employee(id: new EmployeeId(1), firstName: "Michel", lastName: "Barry", email: "mBarry@gmail.com", position: EmployeePosition.Manager),
+            new Employee(id: new EmployeeId(2), firstName: "Victor", lastName: "Majory", email: "vMajory@gmail.com", position: EmployeePosition.Employee),
+            new Employee(id: new EmployeeId(3), firstName: "Christophe", lastName: "Garcia", email: "cGarcia@gmail.com", position: EmployeePosition.Employee));
     }
 }

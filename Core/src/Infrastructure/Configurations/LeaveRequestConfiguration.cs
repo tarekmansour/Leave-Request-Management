@@ -34,6 +34,11 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 
         builder.Property(x => x.EndDate).IsRequired();
 
+        builder.OwnsOne(x => x.Status, leaveRequestStatus =>
+        {
+            leaveRequestStatus.Property(s => s.Value).HasColumnType("[varchar](50)");
+        });
+
         builder.Property(x => x.Comment).HasColumnType("[varchar](200)");
 
         builder.HasOne<Employee>()

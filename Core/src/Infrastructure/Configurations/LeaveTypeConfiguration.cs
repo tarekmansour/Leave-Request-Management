@@ -23,11 +23,11 @@ public sealed class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
         builder.Property(x => x.MaxDaysPerYear).IsRequired();
 
         builder.HasData(
-            new LeaveType(name: "Holiday", maxDaysPerYear: 30),
-            new LeaveType(name: "SickLeave", maxDaysPerYear: 10),
-            new LeaveType(name: "Maternity", maxDaysPerYear: 80),
-            new LeaveType(name: "Paternity", maxDaysPerYear: 25),
-            new LeaveType(name: "MarriageOrPACS", maxDaysPerYear: 4),
-            new LeaveType(name: "ChildBirth", maxDaysPerYear: 1));
+            new LeaveType(id: new LeaveTypeId(1), name: "Holiday", maxDaysPerYear: 30),
+            new LeaveType(id: new LeaveTypeId(2), name: "SickLeave", maxDaysPerYear: 10),
+            new LeaveType(id: new LeaveTypeId(3), name: "Maternity", maxDaysPerYear: 80),
+            new LeaveType(id: new LeaveTypeId(4), name: "Paternity", maxDaysPerYear: 25),
+            new LeaveType(id: new LeaveTypeId(5), name: "MarriageOrPACS", maxDaysPerYear: 4),
+            new LeaveType(id: new LeaveTypeId(6), name: "ChildBirth", maxDaysPerYear: 1));
     }
 }

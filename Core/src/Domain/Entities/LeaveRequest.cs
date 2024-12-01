@@ -6,14 +6,16 @@ namespace Domain.Entities;
 public sealed class LeaveRequest
 {
     public LeaveRequestId Id { get; private set; } = default!;
-    public EmployeeId EmployeeId { get; private set; }
-    public LeaveTypeId LeaveTypeId { get; private set; }
+    public EmployeeId EmployeeId { get; private set; } = default!;
+    public LeaveTypeId LeaveTypeId { get; private set; } = default!;
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
-    public LeaveRequestStatus Status { get; private set; }
+    public LeaveRequestStatus Status { get; private set; } = default!;
     public DateTime RequestDate { get; private set; }
     public string? Comment { get; private set; }
     public EmployeeId ApprovedBy { get; private set; } = null!;
+
+    public LeaveRequest() { } // For EF Core
 
     public LeaveRequest(
         EmployeeId employeeId,
