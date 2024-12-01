@@ -27,7 +27,6 @@ public sealed class LeaveTypeConfiguration : IEntityTypeConfiguration<LeaveType>
             new LeaveType(id: new LeaveTypeId(2), name: "SickLeave", maxDaysPerYear: 10),
             new LeaveType(id: new LeaveTypeId(3), name: "Maternity", maxDaysPerYear: 80),
             new LeaveType(id: new LeaveTypeId(4), name: "Paternity", maxDaysPerYear: 25),
-            new LeaveType(id: new LeaveTypeId(5), name: "MarriageOrPACS", maxDaysPerYear: 4),
-            new LeaveType(id: new LeaveTypeId(6), name: "ChildBirth", maxDaysPerYear: 1));
+            new LeaveType(id: new LeaveTypeId(5), name: "MarriageOrPACS", maxDaysPerYear: 4));
     }
 }
