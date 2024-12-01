@@ -13,7 +13,7 @@ public sealed class LeaveRequest
     public LeaveRequestStatus Status { get; private set; } = default!;
     public DateTime RequestDate { get; private set; }
     public string? Comment { get; private set; }
-    public EmployeeId ApprovedBy { get; private set; } = null!;
+    public EmployeeId DecidedBy { get; private set; } = null!;
 
     public LeaveRequest() { } // For EF Core
 
@@ -42,12 +42,12 @@ public sealed class LeaveRequest
     public void Approve(EmployeeId approvedBy)
     {
         Status = LeaveRequestStatus.Approved;
-        ApprovedBy = approvedBy;
+        DecidedBy = approvedBy;
     }
 
-    public void Reject(EmployeeId approvedBy)
+    public void Reject(EmployeeId rejectedBy)
     {
         Status = LeaveRequestStatus.Rejected;
-        ApprovedBy = approvedBy;
+        DecidedBy = rejectedBy;
     }
 }

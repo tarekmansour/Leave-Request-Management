@@ -86,7 +86,7 @@ public class LeaveRequestTests
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
-        createdLeaveRequest.ApprovedBy.Should().Be(managerId);
+        createdLeaveRequest.DecidedBy.Should().Be(managerId);
     }
 
     [Fact(DisplayName = "Rehect a leave request")]
@@ -106,6 +106,6 @@ public class LeaveRequestTests
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Rejected);
-        createdLeaveRequest.ApprovedBy.Should().Be(managerId);
+        createdLeaveRequest.DecidedBy.Should().Be(managerId);
     }
 }

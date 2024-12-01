@@ -49,7 +49,7 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 
         builder.HasOne<Employee>()
             .WithMany()
-            .HasForeignKey(x => x.ApprovedBy)
+            .HasForeignKey(x => x.DecidedBy)
             .IsRequired(false)
             .HasConstraintName("FK_LeaveRequest_Employee_Approval")
             .OnDelete(DeleteBehavior.Restrict);
