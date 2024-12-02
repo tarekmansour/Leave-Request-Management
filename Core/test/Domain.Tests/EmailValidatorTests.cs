@@ -1,7 +1,10 @@
-﻿using Domain.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Services;
 using FluentAssertions;
 
 namespace Domain.Tests;
+
+[ExcludeFromCodeCoverage]
 public class EmailValidatorTests
 {
     [Theory(DisplayName = "Valid email addresses should return true")]

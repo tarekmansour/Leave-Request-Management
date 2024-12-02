@@ -1,7 +1,10 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 using NSubstitute;
 
 namespace Infrastructure.Tests;
+
+[ExcludeFromCodeCoverage]
 public class UnitOfWorkTests
 {
     private readonly ApplicationDbContext _dbContext;

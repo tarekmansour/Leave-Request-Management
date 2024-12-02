@@ -70,6 +70,5 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
             EndDate: existingLeaveRequest.EndDate,
             Status: existingLeaveRequest.Status.ToString(),
             DecisionReason: existingLeaveRequest.DecisionReason));
-
     }
 }

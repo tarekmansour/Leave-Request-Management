@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Windows.Input;
 using Api;
 using Domain.Entities;
@@ -7,6 +8,8 @@ using Infrastructure;
 using NetArchTest.Rules;
 
 namespace Architecture.Tests;
+
+[ExcludeFromCodeCoverage]
 public class LayersDependencyTests
 {
     protected static readonly Assembly DomainAssembly = typeof(LeaveRequest).Assembly;

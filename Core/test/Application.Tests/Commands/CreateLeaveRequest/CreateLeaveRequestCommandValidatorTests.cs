@@ -4,6 +4,7 @@ using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 
 namespace Application.Tests.Commands.CreateLeaveRequest;
+
 public partial class CreateLeaveRequestCommandTests
 {
     [Fact(DisplayName = "CreateLeaveRequestCommand with invalid properties")]

@@ -1,10 +1,13 @@
-﻿using Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Entities;
 using Domain.Errors;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 
 namespace Domain.Tests;
+
+[ExcludeFromCodeCoverage]
 public class LeaveRequestTests
 {
     [Fact(DisplayName = "New leave request always with pending status")]

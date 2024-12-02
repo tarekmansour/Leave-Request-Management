@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Entities;
 using Domain.Interfaces;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
@@ -6,6 +7,8 @@ using Infrastructure.Repositories;
 using SharedKernel.Tests;
 
 namespace Infrastructure.Tests;
+
+[ExcludeFromCodeCoverage]
 public class LeaveRequestRepositoryTests : DatabaseFixture
 {
     private readonly ILeaveRequestRepository _sut;

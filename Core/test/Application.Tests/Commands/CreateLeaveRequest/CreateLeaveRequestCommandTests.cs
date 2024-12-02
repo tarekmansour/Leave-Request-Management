@@ -1,4 +1,5 @@
-﻿using Application.Commands.CreateLeaveRequest;
+﻿using System.Diagnostics.CodeAnalysis;
+using Application.Commands.CreateLeaveRequest;
 using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
@@ -7,6 +8,8 @@ using NSubstitute;
 using SharedKernel.Tests;
 
 namespace Application.Tests.Commands.CreateLeaveRequest;
+
+[ExcludeFromCodeCoverage]
 public partial class CreateLeaveRequestCommandTests : DatabaseFixture
 {
     private readonly ILogger<CreateLeaveRequestCommandHandler> _logger;

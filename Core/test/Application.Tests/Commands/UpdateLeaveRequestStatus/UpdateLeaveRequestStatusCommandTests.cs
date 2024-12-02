@@ -1,4 +1,5 @@
-﻿using Application.Commands.UpdateLeaveRequestStatus;
+﻿using System.Diagnostics.CodeAnalysis;
+using Application.Commands.UpdateLeaveRequestStatus;
 using Domain.Interfaces;
 using Infrastructure;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,8 @@ using NSubstitute;
 using SharedKernel.Tests;
 
 namespace Application.Tests.Commands.UpdateLeaveRequestStatus;
+
+[ExcludeFromCodeCoverage]
 public partial class UpdateLeaveRequestStatusCommandTests : DatabaseFixture
 {
     private readonly ILogger<UpdateLeaveRequestStatusCommandHandler> _logger;
