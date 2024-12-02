@@ -26,7 +26,7 @@ public partial class CreateLeaveRequestCommandTests
         var act = () => new CreateLeaveRequestCommandHandler(
             null!,
             _validator,
-            _clientRepository,
+            _leaveRequestRepository,
             _unitOfWork);
 
         // Assert
@@ -40,7 +40,7 @@ public partial class CreateLeaveRequestCommandTests
         var act = () => new CreateLeaveRequestCommandHandler(
             _logger,
             _validator,
-            _clientRepository,
+            _leaveRequestRepository,
             null!);
 
         // Assert

@@ -17,12 +17,12 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
     public CreateLeaveRequestCommandHandler(
         ILogger<CreateLeaveRequestCommandHandler> logger,
         IValidator<CreateLeaveRequestCommand> commandValidator,
-        ILeaveRequestRepository appointmentRepository,
+        ILeaveRequestRepository leaveRequestRepository,
         IUnitOfWork unitOfWork)
     {
         _logger = (ILogger)logger ?? NullLogger.Instance;
         _commandValidator = commandValidator ?? throw new ArgumentNullException(nameof(commandValidator));
-        _leaveRequestRepository = appointmentRepository ?? throw new ArgumentNullException(nameof(appointmentRepository));
+        _leaveRequestRepository = leaveRequestRepository ?? throw new ArgumentNullException(nameof(leaveRequestRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 

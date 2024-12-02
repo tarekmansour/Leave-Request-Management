@@ -15,4 +15,9 @@ public class LeaveRequestRepository : ILeaveRequestRepository
         await _dbContext.LeaveRequests.AddAsync(leaveRequest, cancellationToken);
         return leaveRequest.Id;
     }
+
+    public async Task<LeaveRequest?> GetLeaveRequestByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.LeaveRequests.FindAsync(leaveRequestId, cancellationToken);
+    }
 }

@@ -40,4 +40,42 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         createdLeaveRequestId.Should().NotBeNull();
         createdLeaveRequestId.Value.Should().Be(1);
     }
+
+    [Fact(DisplayName = "Get leave request by Id returns existing record")]
+    public async Task GetLeaveRequestByIdAsync_ShouldReturnLeaveRequest_WhenExists()
+    {
+        // Arrange
+        var leaveRequestId = new LeaveRequestId(15);
+
+        var leaveRequest = new LeaveRequest(
+            id: leaveRequestId,
+            submittedBy: new EmployeeId(1),
+            leaveTypeId: new LeaveTypeId(4),
+            startDate: DateTime.UtcNow.AddDays(1),
+            endDate: DateTime.UtcNow.AddDays(5),
+            comment: "paternity days off");
+
+        await _dbContext.LeaveRequests.AddAsync(leaveRequest);
+        await _dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await _sut.GetLeaveRequestByIdAsync(leaveRequestId);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEquivalentTo(leaveRequest);
+    }
+
+    [Fact(DisplayName = "Get leave request by Id returns null for none existing record")]
+    public async Task GetLeaveRequestByIdAsync_ShouldReturnNull_WhenDoesNotExist()
+    {
+        // Arrange
+        var leaveRequestId = new LeaveRequestId(2);
+
+        // Act
+        var result = await _sut.GetLeaveRequestByIdAsync(leaveRequestId);
+
+        // Assert
+        result.Should().BeNull();
+    }
 }

@@ -40,17 +40,17 @@ public sealed class LeaveRequest
         Comment = comment;
     }
 
-    public void Approve(EmployeeId approvedBy, string? decisionReason = null)
+    public LeaveRequest(LeaveRequestId id, EmployeeId submittedBy, LeaveTypeId leaveTypeId, DateTime startDate, DateTime endDate, string? comment)
     {
-        SetDecision(LeaveRequestStatus.Approved, approvedBy, decisionReason);
+        Id = id;
+        SubmittedBy = submittedBy;
+        LeaveTypeId = leaveTypeId;
+        StartDate = startDate;
+        EndDate = endDate;
+        Comment = comment;
     }
 
-    public void Reject(EmployeeId rejectedBy, string? decisionReason = null)
-    {
-        SetDecision(LeaveRequestStatus.Rejected, rejectedBy, decisionReason);
-    }
-
-    private void SetDecision(LeaveRequestStatus status, EmployeeId decidedBy, string? decisionReason)
+    public void UpdateStatus(LeaveRequestStatus status, EmployeeId decidedBy, string? decisionReason = null)
     {
         Status = status;
         DecidedBy = decidedBy;

@@ -7,25 +7,27 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
     public CreateLeaveRequestCommandValidator()
     {
         RuleFor(command => command.EmployeeId)
-            .NotEmpty()
+            .NotNull()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEmployeeId)
                 .WithMessage(LeaveRequestErrorMessages.EmployeeIdShouldNotBeNull);
 
         RuleFor(command => command.LeaveTypeId)
-            .NotEmpty()
+            .NotNull()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveTypeId)
                 .WithMessage(LeaveRequestErrorMessages.LeaveTypeIdShouldNotBeNull);
 
         RuleFor(command => command.StartDate)
             .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidStartDate)
-                .WithMessage(LeaveRequestErrorMessages.StartDateShouldNotBeNull);
+                .WithMessage(LeaveRequestErrorMessages.StartDateShouldNotBeNullOrEmpty);
 
         RuleFor(command => command.EndDate)
             .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEndDate)
-                .WithMessage(LeaveRequestErrorMessages.EndDateShouldNotBeNull);
+                .WithMessage(LeaveRequestErrorMessages.EndDateShouldNotBeNullOrEmpty);
 
-        //TODO: validate balance leave according to max days per user
+        //TODO: check if employee exists or not.
+
+        //TODO: validate if leave request is duplicated
     }
 }

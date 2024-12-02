@@ -79,14 +79,14 @@ public class LeaveRequestTests
             startDate: DateTime.UtcNow.AddDays(10),
             endDate: DateTime.UtcNow.AddDays(20));
 
-        var managerId = new EmployeeId(1);
+        var HRId = new EmployeeId(1);
 
         // Act
-        createdLeaveRequest.Approve(managerId);
+        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Approved, HRId);
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
-        createdLeaveRequest.DecidedBy.Should().Be(managerId);
+        createdLeaveRequest.DecidedBy.Should().Be(HRId);
         createdLeaveRequest.DecisionReason.Should().BeNull();
     }
 
@@ -103,7 +103,7 @@ public class LeaveRequestTests
         var managerId = new EmployeeId(2);
 
         // Act
-        createdLeaveRequest.Reject(managerId, "not valid period");
+        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Rejected, managerId, "not valid period");
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Rejected);

@@ -11,7 +11,7 @@ public partial class CreateLeaveRequestCommandTests : DatabaseFixture
 {
     private readonly ILogger<CreateLeaveRequestCommandHandler> _logger;
     private readonly CreateLeaveRequestCommandValidator _validator;
-    private readonly ILeaveRequestRepository _clientRepository;
+    private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly CreateLeaveRequestCommandHandler _sut;
 
@@ -19,8 +19,8 @@ public partial class CreateLeaveRequestCommandTests : DatabaseFixture
     {
         _logger = Substitute.For<ILogger<CreateLeaveRequestCommandHandler>>();
         _validator = new CreateLeaveRequestCommandValidator();
-        _clientRepository = new LeaveRequestRepository(_dbContext);
+        _leaveRequestRepository = new LeaveRequestRepository(_dbContext);
         _unitOfWork = new UnitOfWork(_dbContext);
-        _sut = new CreateLeaveRequestCommandHandler(_logger, _validator, _clientRepository, _unitOfWork);
+        _sut = new CreateLeaveRequestCommandHandler(_logger, _validator, _leaveRequestRepository, _unitOfWork);
     }
 }
