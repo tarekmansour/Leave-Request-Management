@@ -87,9 +87,10 @@ public class LeaveRequestTests
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
         createdLeaveRequest.DecidedBy.Should().Be(managerId);
+        createdLeaveRequest.DecisionReason.Should().BeNull();
     }
 
-    [Fact(DisplayName = "Rehect a leave request")]
+    [Fact(DisplayName = "Reject a leave request")]
     public void Reject_Should_UpdateStatus()
     {
         // Arrange
@@ -102,10 +103,11 @@ public class LeaveRequestTests
         var managerId = new EmployeeId(2);
 
         // Act
-        createdLeaveRequest.Reject(managerId);
+        createdLeaveRequest.Reject(managerId, "not valid period");
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Rejected);
         createdLeaveRequest.DecidedBy.Should().Be(managerId);
+        createdLeaveRequest.DecisionReason.Should().Be("not valid period");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects.Identifiers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Configurations;
@@ -18,11 +19,11 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 
         // Ensure that the SQL Server column is configured to use IDENTITY
         builder.Property(x => x.Id)
-            .Metadata.SetBeforeSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
+            .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
 
         builder.HasOne<Employee>()
             .WithMany()
-            .HasForeignKey(x => x.EmployeeId)
+            .HasForeignKey(x => x.SubmittedBy)
             .HasConstraintName("FK_LeaveRequest_Employee")
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
@@ -45,7 +46,9 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
             .HasColumnType("[varchar](50)");
         });
 
-        builder.Property(x => x.Comment).HasColumnType("[nvarchar](max)");
+        builder.Property(x => x.Comment).HasColumnType("[varchar](255)");
+
+        builder.Property(x => x.DecisionReason).HasColumnType("[varchar](255)");
 
         builder.HasOne<Employee>()
             .WithMany()
