@@ -4,6 +4,6 @@ using Domain.ValueObjects.Identifiers;
 namespace Domain.Repositories;
 public interface ILeaveRequestRepository
 {
-    Task<LeaveRequestId> CreateLeaveRequestAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default);
-    Task<LeaveRequest?> GetLeaveRequestByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default);
+    Task<LeaveRequestId> CreateAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default);
+    Task<LeaveRequest?> GetByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default);
 }

@@ -9,5 +9,5 @@ public static class LeaveRequestErrorMessages
     public static readonly string EndDateShouldNotBeNullOrEmpty = "Invalid end date. The end date should not be null or empty.";
     public static readonly string LeaveRequestIdShouldNotBeNull = "Invalid LeaveRequest Id. The LeaveRequestId should not be null.";
     public static readonly string LeaveRequestStatusShouldNotBeNullOrEmpty = "Invalid LeaveRequest new status. The new LeaveRequest status should not be null or empty.";
-    public static readonly string NotFoundLEaveRequestToUpdate = "Not found LeaveRequest Id. The LeaveRequest to update is not found.";
+    public static readonly string NotFoundLeaveRequestToUpdate = "Not found LeaveRequest Id. The LeaveRequest to update is not found.";
 }

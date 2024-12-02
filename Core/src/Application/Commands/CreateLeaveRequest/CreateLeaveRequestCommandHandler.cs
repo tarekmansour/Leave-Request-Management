@@ -1,5 +1,4 @@
-﻿using Application.Dtos;
-using Domain.Repositories;
+﻿using Domain.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using SharedKernel;
 
 namespace Application.Commands.CreateLeaveRequest;
-public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, Result<CreatedLeaveRequestDto>>
+public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveRequestCommand, Result<int>>
 {
     private readonly ILogger _logger;
     private readonly IValidator<CreateLeaveRequestCommand> _commandValidator;
@@ -26,7 +25,7 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task<Result<CreatedLeaveRequestDto>> Handle(CreateLeaveRequestCommand command, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateLeaveRequestCommand command, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(command));
 
@@ -37,12 +36,12 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 "New leave request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
-            return Result<CreatedLeaveRequestDto>.Failure(
+            return Result<int>.Failure(
                 validationResult.Errors
                 .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
         }
 
-        var createdLeaveRequestId = await _leaveRequestRepository.CreateLeaveRequestAsync(command.MapToLeaveRequest(), cancellationToken);
+        var createdLeaveRequestId = await _leaveRequestRepository.CreateAsync(command.MapToLeaveRequest(), cancellationToken);
         await _unitOfWork.PersistChangesAsync(cancellationToken);
 
         _logger.LogInformation("Successfully created leave request for user '{UserId}' from start date '{StartDate}' to end date '{EndDate}'.",
@@ -50,6 +49,6 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 command.StartDate,
                 command.EndDate);
 
-        return Result<CreatedLeaveRequestDto>.Success(new CreatedLeaveRequestDto(createdLeaveRequestId.Value));
+        return Result<int>.Success(createdLeaveRequestId.Value);
     }
 }

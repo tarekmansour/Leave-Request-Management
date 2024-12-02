@@ -44,12 +44,12 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
                 .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
         }
 
-        var existingLeaveRequest = await _leaveRequestRepository.GetLeaveRequestByIdAsync(command.LeaveRequestId, cancellationToken);
+        var existingLeaveRequest = await _leaveRequestRepository.GetByIdAsync(command.LeaveRequestId, cancellationToken);
 
         if (existingLeaveRequest is null)
         {
             _logger.LogWarning("The leave request to update is not found for LeaveRequestId '{LeaveRequestId}'.", command.LeaveRequestId);
-            return Result<UpdatedLeaveRequestDto>.Failure(new Error(LeaveRequestErrorCodes.InvalidLeaveRequestId, LeaveRequestErrorMessages.NotFoundLEaveRequestToUpdate));
+            return Result<UpdatedLeaveRequestDto>.Failure(new Error(LeaveRequestErrorCodes.InvalidLeaveRequestId, LeaveRequestErrorMessages.NotFoundLeaveRequestToUpdate));
         }
 
         existingLeaveRequest.UpdateStatus(

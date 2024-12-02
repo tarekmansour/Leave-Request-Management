@@ -65,7 +65,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
             LeaveRequestId: new LeaveRequestId(1),
             NewStatus: LeaveRequestStatus.Approved);
 
-        _leaveRequestRepository.GetLeaveRequestByIdAsync(Arg.Any<LeaveRequestId>())
+        _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(expectedLeaveRequest);
 
         //Act
@@ -84,7 +84,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
             LeaveRequestId: new LeaveRequestId(1),
             NewStatus: LeaveRequestStatus.Approved);
 
-        _leaveRequestRepository.GetLeaveRequestByIdAsync(Arg.Any<LeaveRequestId>())
+        _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(Task.FromResult<LeaveRequest?>(null));
 
 

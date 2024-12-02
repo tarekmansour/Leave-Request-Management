@@ -37,7 +37,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
             comment: "new holidays");
 
         // Act
-        var createdLeaveRequestId = await _sut.CreateLeaveRequestAsync(leaveRequest);
+        var createdLeaveRequestId = await _sut.CreateAsync(leaveRequest);
 
         // Assert
         createdLeaveRequestId.Should().NotBeNull();
@@ -62,7 +62,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         await _dbContext.SaveChangesAsync();
 
         // Act
-        var result = await _sut.GetLeaveRequestByIdAsync(leaveRequestId);
+        var result = await _sut.GetByIdAsync(leaveRequestId);
 
         // Assert
         result.Should().NotBeNull();
@@ -76,7 +76,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         var leaveRequestId = new LeaveRequestId(2);
 
         // Act
-        var result = await _sut.GetLeaveRequestByIdAsync(leaveRequestId);
+        var result = await _sut.GetByIdAsync(leaveRequestId);
 
         // Assert
         result.Should().BeNull();

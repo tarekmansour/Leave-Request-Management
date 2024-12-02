@@ -1,5 +1,4 @@
-﻿using Application.Dtos;
-using Domain.ValueObjects.Identifiers;
+﻿using Domain.ValueObjects.Identifiers;
 using MediatR;
 using SharedKernel;
 
@@ -9,4 +8,4 @@ public record CreateLeaveRequestCommand(
     LeaveTypeId LeaveTypeId,
     DateTime StartDate,
     DateTime EndDate,
-    string? Comment = null) : IRequest<Result<CreatedLeaveRequestDto>>;
+    string? Comment = null) : IRequest<Result<int>>;

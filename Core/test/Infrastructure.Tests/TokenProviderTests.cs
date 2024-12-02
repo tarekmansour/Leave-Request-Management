@@ -32,7 +32,7 @@ public class TokenProviderTests
     public void GenerateToken_ShouldReturnValidToken()
     {
         // Arrange
-        var user = new User(new UserId(1), "test@example.com", "FirstName", "LastName");
+        var user = new User(new UserId(1), "test@example.com", "FirstName", "LastName", "pwd-hash");
 
         // Act
         var token = _tokenProvider.GenerateToken(user);

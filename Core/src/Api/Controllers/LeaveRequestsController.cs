@@ -1,6 +1,5 @@
 ﻿using Api.Requests;
 using Application.Commands.CreateLeaveRequest;
-using Application.Dtos;
 using Asp.Versioning;
 using Domain.ValueObjects.Identifiers;
 using MediatR;
@@ -22,7 +21,7 @@ public class LeaveRequestsController : ControllerBase
 
     [HttpPost]
     [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
-    [SwaggerResponse(200, Type = typeof(CreatedLeaveRequestDto))]
+    [SwaggerResponse(200, Type = typeof(int))]
     [SwaggerResponse(400, "Validation errors occurred.")]
     public async Task<IActionResult> CreateLeaveRequestAsync(
             [FromBody] CreateLeaveRequest request,

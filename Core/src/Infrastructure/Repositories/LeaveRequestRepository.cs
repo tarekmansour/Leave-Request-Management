@@ -10,13 +10,13 @@ public class LeaveRequestRepository : ILeaveRequestRepository
     public LeaveRequestRepository(ApplicationDbContext dbContext) =>
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 
-    public async Task<LeaveRequestId> CreateLeaveRequestAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default)
+    public async Task<LeaveRequestId> CreateAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default)
     {
         await _dbContext.LeaveRequests.AddAsync(leaveRequest, cancellationToken);
         return leaveRequest.Id;
     }
 
-    public async Task<LeaveRequest?> GetLeaveRequestByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default)
+    public async Task<LeaveRequest?> GetByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.LeaveRequests.FindAsync(leaveRequestId, cancellationToken);
     }

@@ -8,23 +8,39 @@ public sealed class User
     public string Email { get; private set; } = default!;
     public string FirstName { get; private set; } = default!;
     public string LastName { get; private set; } = default!;
+    public string PasswordHash { get; private set; } = default!;
+
 
     public User() { } // For EF Core
 
     public User(
-        UserId id,
         string email,
         string firstName,
-        string lastName)
+        string lastName,
+        string passwordHash)
     {
         if (!EmailValidator.IsValidEmail(email))
         {
             throw new ArgumentException("Invalid user Email.", nameof(email));
         }
 
+        Email = email;
+        FirstName = firstName;
+        LastName = lastName;
+        PasswordHash = passwordHash;
+    }
+
+    public User(
+        UserId id,
+        string email,
+        string firstName,
+        string lastName,
+        string passwordHash)
+    {
         Id = id;
         Email = email;
         FirstName = firstName;
         LastName = lastName;
+        PasswordHash = passwordHash;
     }
 }
