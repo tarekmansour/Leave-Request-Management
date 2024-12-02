@@ -55,7 +55,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
     {
         //Arrange
         var expectedLeaveRequest = new LeaveRequest(
-            employeeId: new EmployeeId(3),
+            submittedBy: new UserId(3),
             leaveTypeId: new LeaveTypeId(1),
             startDate: DateTime.UtcNow.AddDays(20),
             endDate: DateTime.UtcNow.AddDays(30),

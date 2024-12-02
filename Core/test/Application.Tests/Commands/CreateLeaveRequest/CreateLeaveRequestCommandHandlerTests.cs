@@ -52,7 +52,7 @@ public partial class CreateLeaveRequestCommandTests
     {
         //Arrange
         var command = new CreateLeaveRequestCommand(
-            EmployeeId: new EmployeeId(2),
+            SubmittedBy: new UserId(2),
             LeaveTypeId: new LeaveTypeId(1),
             StartDate: DateTime.UtcNow.AddDays(7),
             EndDate: DateTime.UtcNow.AddDays(10));

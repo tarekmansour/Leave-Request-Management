@@ -54,7 +54,7 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
 
         existingLeaveRequest.UpdateStatus(
             status: command.NewStatus,
-            decidedBy: new EmployeeId(1),//todo: get id of validator
+            decidedBy: new UserId(1),//todo: get id of validator
             decisionReason: command.DecisionReason);
 
         await _unitOfWork.PersistChangesAsync(cancellationToken);

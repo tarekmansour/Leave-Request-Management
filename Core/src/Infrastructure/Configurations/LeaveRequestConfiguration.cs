@@ -21,10 +21,10 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
         builder.Property(x => x.Id)
             .Metadata.SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
 
-        builder.HasOne<Employee>()
+        builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(x => x.SubmittedBy)
-            .HasConstraintName("FK_LeaveRequest_Employee")
+            .HasConstraintName("FK_LeaveRequest_User")
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
@@ -50,11 +50,11 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
 
         builder.Property(x => x.DecisionReason).HasColumnType("[varchar](255)");
 
-        builder.HasOne<Employee>()
+        builder.HasOne<User>()
             .WithMany()
             .HasForeignKey(x => x.DecidedBy)
             .IsRequired(false)
-            .HasConstraintName("FK_LeaveRequest_Employee_Approval")
+            .HasConstraintName("FK_LeaveRequest_User_Approval")
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

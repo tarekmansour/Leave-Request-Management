@@ -30,7 +30,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
     {
         // Arrange
         var leaveRequest = new LeaveRequest(
-            employeeId: new EmployeeId(2),
+            submittedBy: new UserId(2),
             leaveTypeId: new LeaveTypeId(1),
             startDate: DateTime.UtcNow.AddDays(1),
             endDate: DateTime.UtcNow.AddDays(5),
@@ -52,7 +52,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
 
         var leaveRequest = new LeaveRequest(
             id: leaveRequestId,
-            submittedBy: new EmployeeId(1),
+            submittedBy: new UserId(1),
             leaveTypeId: new LeaveTypeId(4),
             startDate: DateTime.UtcNow.AddDays(1),
             endDate: DateTime.UtcNow.AddDays(5),

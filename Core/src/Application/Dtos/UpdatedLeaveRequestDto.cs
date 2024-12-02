@@ -3,7 +3,7 @@
 namespace Application.Dtos;
 public record UpdatedLeaveRequestDto(
     LeaveRequestId Id,
-    EmployeeId SubmittedBy,
+    UserId SubmittedBy,
     DateTime StartDate,
     DateTime EndDate,
     string Status,

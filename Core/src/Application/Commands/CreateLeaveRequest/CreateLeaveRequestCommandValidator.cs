@@ -6,10 +6,10 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
 {
     public CreateLeaveRequestCommandValidator()
     {
-        RuleFor(command => command.EmployeeId)
+        RuleFor(command => command.SubmittedBy)
             .NotNull()
-                .WithErrorCode(LeaveRequestErrorCodes.InvalidEmployeeId)
-                .WithMessage(LeaveRequestErrorMessages.EmployeeIdShouldNotBeNull);
+                .WithErrorCode(LeaveRequestErrorCodes.InvalidUserId)
+                .WithMessage(LeaveRequestErrorMessages.UserIdShouldNotBeNull);
 
         RuleFor(command => command.LeaveTypeId)
             .NotNull()
@@ -26,7 +26,7 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEndDate)
                 .WithMessage(LeaveRequestErrorMessages.EndDateShouldNotBeNullOrEmpty);
 
-        //TODO: check if employee exists or not.
+        //TODO: check if user exists or not.
 
         //TODO: validate if leave request is duplicated
     }

@@ -2,7 +2,7 @@
 
 namespace Domain.ValueObjects.Identifiers;
 
-public record USerId : StrongTypedId
+public record UserId : StrongTypedId
 {
-    public USerId(int value) : base(value) { }
+    public UserId(int value) : base(value) { }
 }

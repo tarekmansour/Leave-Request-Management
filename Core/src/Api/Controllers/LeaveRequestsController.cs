@@ -21,7 +21,7 @@ public class LeaveRequestsController : ControllerBase
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     [HttpPost]
-    [SwaggerOperation(Summary = "Submits a new leave request for an employee.")]
+    [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
     [SwaggerResponse(200, Type = typeof(CreatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]
     public async Task<IActionResult> CreateLeaveRequestAsync(
@@ -29,7 +29,7 @@ public class LeaveRequestsController : ControllerBase
             CancellationToken cancellationToken)
     {
         var command = new CreateLeaveRequestCommand(
-            EmployeeId: new EmployeeId(request.EmployeeId),
+            SubmittedBy: new UserId(request.SubmittedBy),
             LeaveTypeId: new LeaveTypeId(request.LeaveTypeId),
             StartDate: request.StartDate,
             EndDate: request.EndDate,

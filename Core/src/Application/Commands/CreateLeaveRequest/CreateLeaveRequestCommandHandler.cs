@@ -45,8 +45,8 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         var createdLeaveRequestId = await _leaveRequestRepository.CreateLeaveRequestAsync(command.MapToLeaveRequest(), cancellationToken);
         await _unitOfWork.PersistChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Successfully created leave request for employee '{EmployeeId}' from start date '{StartDate}' to end date '{EndDate}'.",
-                command.EmployeeId,
+        _logger.LogInformation("Successfully created leave request for user '{UserId}' from start date '{StartDate}' to end date '{EndDate}'.",
+                command.SubmittedBy,
                 command.StartDate,
                 command.EndDate);
 

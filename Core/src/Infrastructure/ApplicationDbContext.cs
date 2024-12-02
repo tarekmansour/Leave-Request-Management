@@ -12,7 +12,7 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
+    public DbSet<User> Users { get; set; } = default!;
     public DbSet<LeaveRequest> LeaveRequests { get; set; } = default!;
     public DbSet<LeaveType> LeaveTypes { get; set; } = default!;
-    public DbSet<Employee> Employees { get; set; } = default!;
 }

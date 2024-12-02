@@ -7,7 +7,7 @@ public static class MappingExtensions
     public static LeaveRequest MapToLeaveRequest(this CreateLeaveRequestCommand command)
     {
         return new LeaveRequest(
-            employeeId: command.EmployeeId,
+            submittedBy: command.SubmittedBy,
             leaveTypeId: command.LeaveTypeId,
             startDate: command.StartDate,
             endDate: command.EndDate,

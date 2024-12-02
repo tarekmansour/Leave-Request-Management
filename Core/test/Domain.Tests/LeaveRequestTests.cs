@@ -14,14 +14,14 @@ public class LeaveRequestTests
     public void NewLeaveRequest_ShouldBeOn_PendingStatus()
     {
         // Arrange
-        var employeeId = new EmployeeId(1);
+        var submittedBy = new UserId(1);
         var leaveTypeId = new LeaveTypeId(2);
         var startDate = DateTime.UtcNow.AddDays(1);
         var endDate = DateTime.UtcNow.AddDays(5);
 
         // Act
         var newLeaveRequest = new LeaveRequest(
-            employeeId: employeeId,
+            submittedBy: submittedBy,
             leaveTypeId: leaveTypeId,
             startDate: startDate,
             endDate: endDate);
@@ -34,14 +34,14 @@ public class LeaveRequestTests
     public void NewLeaveRequest_ShouldValidate_EntryDates()
     {
         // Arrange
-        var employeeId = new EmployeeId(10);
+        var submittedBy = new UserId(10);
         var leaveTypeId = new LeaveTypeId(3);
         var startDate = DateTime.UtcNow.AddDays(7);
         var endDate = DateTime.UtcNow.AddDays(2);
 
         // Act
         Func<LeaveRequest> newLeaveRequest = () => new LeaveRequest(
-            employeeId: employeeId,
+            submittedBy: submittedBy,
             leaveTypeId: leaveTypeId,
             startDate: startDate,
             endDate: endDate);
@@ -55,14 +55,14 @@ public class LeaveRequestTests
     public void NewLeaveRequest_ShouldValidate_StartDate()
     {
         // Arrange
-        var employeeId = new EmployeeId(10);
+        var submittedBy = new UserId(10);
         var leaveTypeId = new LeaveTypeId(3);
         var startDate = DateTime.UtcNow.AddDays(-2);
         var endDate = DateTime.UtcNow.AddDays(5);
 
         // Act
         Func<LeaveRequest> newLeaveRequest = () => new LeaveRequest(
-            employeeId: employeeId,
+            submittedBy: submittedBy,
             leaveTypeId: leaveTypeId,
             startDate: startDate,
             endDate: endDate);
@@ -77,19 +77,19 @@ public class LeaveRequestTests
     {
         // Arrange
         var createdLeaveRequest = new LeaveRequest(
-            employeeId: new EmployeeId(3),
+            submittedBy: new UserId(3),
             leaveTypeId: new LeaveTypeId(4),
             startDate: DateTime.UtcNow.AddDays(10),
             endDate: DateTime.UtcNow.AddDays(20));
 
-        var HRId = new EmployeeId(1);
+        var HRUserId = new UserId(1);
 
         // Act
-        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Approved, HRId);
+        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Approved, HRUserId);
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
-        createdLeaveRequest.DecidedBy.Should().Be(HRId);
+        createdLeaveRequest.DecidedBy.Should().Be(HRUserId);
         createdLeaveRequest.DecisionReason.Should().BeNull();
     }
 
@@ -98,12 +98,12 @@ public class LeaveRequestTests
     {
         // Arrange
         var createdLeaveRequest = new LeaveRequest(
-            employeeId: new EmployeeId(3),
+            submittedBy: new UserId(3),
             leaveTypeId: new LeaveTypeId(4),
             startDate: DateTime.UtcNow.AddDays(10),
             endDate: DateTime.UtcNow.AddDays(20));
 
-        var managerId = new EmployeeId(2);
+        var managerId = new UserId(2);
 
         // Act
         createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Rejected, managerId, "not valid period");

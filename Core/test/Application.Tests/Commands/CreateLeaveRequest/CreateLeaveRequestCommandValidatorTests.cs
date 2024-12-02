@@ -12,7 +12,7 @@ public partial class CreateLeaveRequestCommandTests
     {
         //Arrange
         var command = new CreateLeaveRequestCommand(
-            EmployeeId: null!,
+            SubmittedBy: null!,
             LeaveTypeId: new LeaveTypeId(3),
             StartDate: DateTime.UtcNow.AddDays(1),
             EndDate: DateTime.UtcNow.AddDays(5));
@@ -23,7 +23,7 @@ public partial class CreateLeaveRequestCommandTests
         //Assert
         result.IsFailure.Should().BeTrue();
         result.Errors.Should().HaveCount(1);
-        result.Errors.FirstOrDefault()!.Code.Should().Be(LeaveRequestErrorCodes.InvalidEmployeeId);
-        result.Errors.FirstOrDefault()!.Description.Should().Be(LeaveRequestErrorMessages.EmployeeIdShouldNotBeNull);
+        result.Errors.FirstOrDefault()!.Code.Should().Be(LeaveRequestErrorCodes.InvalidUserId);
+        result.Errors.FirstOrDefault()!.Description.Should().Be(LeaveRequestErrorMessages.UserIdShouldNotBeNull);
     }
 }

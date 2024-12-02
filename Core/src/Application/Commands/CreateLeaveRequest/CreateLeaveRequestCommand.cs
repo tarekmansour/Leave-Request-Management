@@ -5,7 +5,7 @@ using SharedKernel;
 
 namespace Application.Commands.CreateLeaveRequest;
 public record CreateLeaveRequestCommand(
-    EmployeeId EmployeeId,
+    UserId SubmittedBy,
     LeaveTypeId LeaveTypeId,
     DateTime StartDate,
     DateTime EndDate,
