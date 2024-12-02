@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Application.Commands.UpdateLeaveRequestStatus;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Infrastructure;
 using Microsoft.Extensions.Logging;
 using NSubstitute;

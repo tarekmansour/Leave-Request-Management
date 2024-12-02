@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 using Infrastructure.Repositories;

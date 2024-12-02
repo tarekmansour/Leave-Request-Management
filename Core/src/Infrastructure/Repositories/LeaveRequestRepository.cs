@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Domain.ValueObjects.Identifiers;
 
 namespace Infrastructure.Repositories;

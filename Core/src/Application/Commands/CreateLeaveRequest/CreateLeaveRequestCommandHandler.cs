@@ -1,5 +1,5 @@
 ﻿using Application.Dtos;
-using Domain.Interfaces;
+using Domain.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;

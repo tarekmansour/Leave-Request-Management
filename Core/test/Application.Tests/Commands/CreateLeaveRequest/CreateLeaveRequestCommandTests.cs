@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Application.Commands.CreateLeaveRequest;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;

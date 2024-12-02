@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text;
-using Domain.Abstractions;
+using Application.Abstractions;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -12,7 +12,7 @@ public sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
     public string GenerateToken(User user)
     {
         string secretKey = configuration["Jwt:Secret"]!;
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var securityKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(secretKey));
 
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 

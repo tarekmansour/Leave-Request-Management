@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects.Identifiers;
 
-namespace Domain.Interfaces;
+namespace Domain.Repositories;
 public interface ILeaveRequestRepository
 {
     Task<LeaveRequestId> CreateLeaveRequestAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default);

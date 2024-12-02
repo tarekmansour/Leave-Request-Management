@@ -1,5 +1,5 @@
 ﻿using Domain.Errors;
-using Domain.Interfaces;
+using Domain.Repositories;
 using FluentValidation;
 
 namespace Application.Commands.UpdateLeaveRequestStatus;

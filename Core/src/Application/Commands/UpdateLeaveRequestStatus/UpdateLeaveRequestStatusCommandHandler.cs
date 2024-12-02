@@ -1,6 +1,6 @@
 ﻿using Application.Dtos;
 using Domain.Errors;
-using Domain.Interfaces;
+using Domain.Repositories;
 using Domain.ValueObjects.Identifiers;
 using FluentValidation;
 using MediatR;
