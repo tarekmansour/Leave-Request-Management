@@ -32,8 +32,4 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\Login\" />
-  </ItemGroup>
-
 </Project>
