@@ -9,6 +9,7 @@ public sealed class User
     public string FirstName { get; private set; } = default!;
     public string LastName { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;
+    public IEnumerable<string> Roles { get; private set; } = default!;
 
 
     public User() { } // For EF Core
@@ -17,7 +18,8 @@ public sealed class User
         string email,
         string firstName,
         string lastName,
-        string passwordHash)
+        string passwordHash,
+        IEnumerable<string> roles)
     {
         if (!EmailValidator.IsValidEmail(email))
         {
@@ -28,6 +30,7 @@ public sealed class User
         FirstName = firstName;
         LastName = lastName;
         PasswordHash = passwordHash;
+        Roles = roles;
     }
 
     public User(

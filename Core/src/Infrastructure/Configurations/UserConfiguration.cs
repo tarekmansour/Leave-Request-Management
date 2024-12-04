@@ -28,10 +28,9 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnType("[varchar](100)")
                 .IsRequired();
 
-        //builder.HasData(
-        //    new User(id: new UserId(1), firstName: "Tarek", lastName: "Mansour", email: "tmansour@gmail.com"),
-        //    new User(id: new UserId(2), firstName: "Michel", lastName: "Barry", email: "mBarry@gmail.com"),
-        //    new User(id: new UserId(3), firstName: "Victor", lastName: "Majory", email: "vMajory@gmail.com"),
-        //    new User(id: new UserId(4), firstName: "Christophe", lastName: "Garcia", email: "cGarcia@gmail.com"));
+        builder.Property(x => x.Roles)
+                .HasColumnType("[varchar](max)")
+                .IsRequired();
+
     }
 }

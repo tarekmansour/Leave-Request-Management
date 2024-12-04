@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.Requests;
+namespace Api.Contracts;
 
 public record CreateLeaveRequest(
     [Required] int SubmittedBy,

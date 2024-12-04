@@ -1,4 +1,4 @@
-﻿using Api.Requests;
+﻿using Api.Contracts;
 using Application.Commands.UserLogin;
 using Application.Commands.UserRegister;
 using Asp.Versioning;
@@ -32,7 +32,8 @@ public class UsersController : ControllerBase
             Email: request.Email,
             FirstName: request.FirstName,
             LastName: request.LastName,
-            Password: request.Password);
+            Password: request.Password,
+            Roles: request.Roles);
 
         var result = await _mediator.Send(command, cancellationToken);
 

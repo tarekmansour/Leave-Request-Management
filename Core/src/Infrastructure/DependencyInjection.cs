@@ -18,7 +18,7 @@ public static class DependencyInjection
         services
             .AddServices()
             .AddInMemoryDatabase()
-            .AddAuthorizationInternal()
+            .AddAuthorization()
             .AddAuthenticationInternal(configuration);
 
     private static IServiceCollection AddInMemoryDatabase(this IServiceCollection services)
@@ -61,10 +61,15 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthorizationInternal(this IServiceCollection services)
-    {
-        services.AddAuthorization();
+    //private static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
+    //{
+    //    services.AddAuthorization(options =>
+    //    {
+    //        options.AddPolicy(Policy.Validator.ToString(), policy =>
+    //            policy.RequireClaim("Permission", "Validator"));
+    //    });
 
-        return services;
-    }
+    //    return services;
+    //}
+
 }

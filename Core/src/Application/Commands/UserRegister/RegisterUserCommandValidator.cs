@@ -29,5 +29,10 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .MinimumLength(8)
                 .WithErrorCode(UserErrorCodes.InvalidPasswordLength)
                 .WithMessage(UserErrorMessages.PasswordLengthShouldHaveMinimumDigits);
+
+        RuleFor(command => command.Roles)
+            .NotEmpty()
+                .WithErrorCode(UserErrorCodes.InvalidUserRoles)
+                .WithMessage(UserErrorMessages.UserRolesShouldNotBeNullOrEmpty);
     }
 }

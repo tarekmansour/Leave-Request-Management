@@ -6,4 +6,5 @@ public sealed record RegisterUserCommand(
     string Email,
     string FirstName,
     string LastName,
-    string Password) : IRequest<Result<int>>;
+    string Password,
+    IEnumerable<string> Roles) : IRequest<Result<int>>;

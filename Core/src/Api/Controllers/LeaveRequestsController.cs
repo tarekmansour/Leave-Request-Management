@@ -1,4 +1,4 @@
-﻿using Api.Requests;
+﻿using Api.Contracts;
 using Application.Commands.CreateLeaveRequest;
 using Application.Commands.UpdateLeaveRequest;
 using Application.Dtos;
@@ -22,6 +22,7 @@ public class LeaveRequestsController : ControllerBase
     public LeaveRequestsController(IMediator mediator)
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
+    [Authorize(Roles = "User")]
     [HttpPost]
     [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
     [SwaggerResponse(200, Type = typeof(int))]
@@ -44,7 +45,7 @@ public class LeaveRequestsController : ControllerBase
                 : Ok(result.Value);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,HR")]
     [HttpPatch("{id}")]
     [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]

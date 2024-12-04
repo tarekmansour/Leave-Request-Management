@@ -8,4 +8,5 @@ public static class UserErrorMessages
     public static readonly string UserLastNameShouldNotBeNullOrEmpty = "Invalid user last name. The user last name should not be null or empty.";
     public static readonly string PasswordLengthShouldHaveMinimumDigits = "Invalid password. The password should have at minimum a length of 8.";
     public static readonly string UserEmailNotUnique = "Invalid user Email. The provided email is not unique.";
+    public static readonly string UserRolesShouldNotBeNullOrEmpty = "Invalid user roles. The user roles should not be null or empty.";
 }

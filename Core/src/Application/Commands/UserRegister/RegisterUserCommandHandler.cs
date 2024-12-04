@@ -60,7 +60,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
                 email: command.Email,
                 firstName: command.FirstName,
                 lastName: command.LastName,
-                passwordHash: _passwordHasher.Hash(command.Password)),
+                passwordHash: _passwordHasher.Hash(command.Password),
+                roles: command.Roles),
             cancellationToken);
 
         await _unitOfWork.PersistChangesAsync(cancellationToken);
