@@ -48,8 +48,8 @@ public class LeaveRequestsController : ControllerBase
     [HttpPatch("{id}")]
     [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]
-    [SwaggerResponse(401, "401.")]
-    [SwaggerResponse(403, "403.")]
+    [SwaggerResponse(401, "Unauthorized user.")]
+    [SwaggerResponse(403, "Forbidden access.")]
     [SwaggerOperation(Summary = "Update existing leave request.")]
     public async Task<IActionResult> UpdateLeaveRequestAsync(
         int id,

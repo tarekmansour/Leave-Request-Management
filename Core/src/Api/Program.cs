@@ -1,4 +1,5 @@
 using Api;
+using Api.Extensions;
 using Application;
 using Infrastructure;
 
@@ -6,9 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
+builder.Services.AddSwaggerGenWithAuth();
+
 builder.Services
-    .AddPresentation()
     .AddApplication()
+    .AddPresentation()
     .AddInfrastructure(configuration);
 
 var app = builder.Build();
@@ -21,14 +24,18 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
+
 app.UseStatusCodePages();
+
 app.UseExceptionHandler();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
 
 namespace Api
 {

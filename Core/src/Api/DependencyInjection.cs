@@ -9,11 +9,11 @@ public static class DependencyInjection
         this IServiceCollection services) =>
         services
             .AddEndpointsApiExplorer()
-            .AddSwagger()
             .AddControllersOptions()
+            .AddSwaggerGenInternal()
             .AddApiVersioningManagement()
-            .AddProblemDetails()
-            .AddExceptionHandler<GlobalExceptionHandler>();
+            .AddExceptionHandler<GlobalExceptionHandler>()
+            .AddProblemDetails();
 
     private static IServiceCollection AddControllersOptions(this IServiceCollection services)
     {
@@ -45,7 +45,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddSwagger(this IServiceCollection services)
+    private static IServiceCollection AddSwaggerGenInternal(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {

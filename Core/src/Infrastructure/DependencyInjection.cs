@@ -18,8 +18,8 @@ public static class DependencyInjection
         services
             .AddServices()
             .AddInMemoryDatabase()
-            .AddAuthenticationInternal(configuration)
-            .AddAuthorizationInternal();
+            .AddAuthorizationInternal()
+            .AddAuthenticationInternal(configuration);
 
     private static IServiceCollection AddInMemoryDatabase(this IServiceCollection services)
     {
@@ -51,12 +51,10 @@ public static class DependencyInjection
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    ClockSkew = TimeSpan.Zero
+                    //ClockSkew = TimeSpan.Zero //do not accept expired tokens
                 };
             });
 
-        //services.AddHttpContextAccessor();
-        //services.AddScoped<IUserContext, UserContext>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
 
@@ -66,12 +64,6 @@ public static class DependencyInjection
     private static IServiceCollection AddAuthorizationInternal(this IServiceCollection services)
     {
         services.AddAuthorization();
-
-        //services.AddScoped<PermissionProvider>();
-
-        //services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
-
-        //services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         return services;
     }
