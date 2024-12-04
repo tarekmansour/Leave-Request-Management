@@ -5,7 +5,17 @@ namespace Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddControllersOptions(this IServiceCollection services)
+    public static IServiceCollection AddPresentation(
+        this IServiceCollection services) =>
+        services
+            .AddEndpointsApiExplorer()
+            .AddSwagger()
+            .AddControllersOptions()
+            .AddApiVersioningManagement()
+            .AddProblemDetails()
+            .AddExceptionHandler<GlobalExceptionHandler>();
+
+    private static IServiceCollection AddControllersOptions(this IServiceCollection services)
     {
         services.AddControllers()
             .AddJsonOptions(options =>
@@ -16,7 +26,7 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddApiVersioningManagement(this IServiceCollection services)
+    private static IServiceCollection AddApiVersioningManagement(this IServiceCollection services)
     {
         services.AddApiVersioning(options =>
         {
@@ -35,7 +45,7 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {

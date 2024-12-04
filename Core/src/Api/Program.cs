@@ -4,16 +4,12 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configuration = builder.Configuration;
+
 builder.Services
-    .AddControllersOptions()
-    .AddEndpointsApiExplorer()
-    .AddProblemDetails()
-    .AddExceptionHandler<GlobalExceptionHandler>()
-    .AddApiVersioningManagement()
-    .AddEndpointsApiExplorer()
-    .AddSwagger()
+    .AddPresentation()
     .AddApplication()
-    .AddInfrastructure();
+    .AddInfrastructure(configuration);
 
 var app = builder.Build();
 
@@ -28,6 +24,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseStatusCodePages();
 app.UseExceptionHandler();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

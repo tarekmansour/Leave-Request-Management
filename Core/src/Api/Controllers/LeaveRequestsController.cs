@@ -4,6 +4,7 @@ using Application.Commands.UpdateLeaveRequest;
 using Application.Dtos;
 using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
@@ -43,9 +44,12 @@ public class LeaveRequestsController : ControllerBase
                 : Ok(result.Value);
     }
 
+    [Authorize]
     [HttpPatch("{id}")]
     [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]
+    [SwaggerResponse(401, "401.")]
+    [SwaggerResponse(403, "403.")]
     [SwaggerOperation(Summary = "Update existing leave request.")]
     public async Task<IActionResult> UpdateLeaveRequestAsync(
         int id,
