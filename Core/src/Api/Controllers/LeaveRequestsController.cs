@@ -54,10 +54,10 @@ public class LeaveRequestsController : ControllerBase
     {
         var command = new UpdateLeaveRequestCommand(
             LeaveRequestId: id,
-            LeaveType: updateLeaveRequest.LeaveType.ToString(),
+            LeaveType: updateLeaveRequest.LeaveType?.ToString(),
             StartDate: updateLeaveRequest.StartDate,
             EndDate: updateLeaveRequest.EndDate,
-            NewStatus: updateLeaveRequest.NewStatus.ToString(),
+            NewStatus: updateLeaveRequest.NewStatus?.ToString(),
             Comment: updateLeaveRequest.Comment,
             DecisionReason: updateLeaveRequest.DecisionReason);
 
