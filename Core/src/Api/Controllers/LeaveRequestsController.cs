@@ -22,7 +22,7 @@ public class LeaveRequestsController : ControllerBase
     public LeaveRequestsController(IMediator mediator)
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "Employee")]
     [HttpPost]
     [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
     [SwaggerResponse(200, Type = typeof(int))]
