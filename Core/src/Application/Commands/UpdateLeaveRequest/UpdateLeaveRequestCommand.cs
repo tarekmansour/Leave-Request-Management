@@ -6,9 +6,9 @@ namespace Application.Commands.UpdateLeaveRequest;
 
 public record UpdateLeaveRequestCommand(
     int LeaveRequestId,
-    string? LeaveType,
-    DateTime? StartDate,
-    DateTime? EndDate,
-    string? NewStatus,
-    string? Comment,
+    string? LeaveType = null,
+    DateTime? StartDate = null,
+    DateTime? EndDate = null,
+    string? NewStatus = null,
+    string? Comment = null,
     string? DecisionReason = null) : IRequest<Result<UpdatedLeaveRequestDto>>;

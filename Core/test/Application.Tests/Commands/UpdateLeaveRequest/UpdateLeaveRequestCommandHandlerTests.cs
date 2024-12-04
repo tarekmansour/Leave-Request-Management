@@ -1,17 +1,18 @@
-﻿using Domain.Entities;
+﻿using Application.Commands.UpdateLeaveRequest;
+using Domain.Entities;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 using NSubstitute;
 
-namespace Application.Tests.Commands.UpdateLeaveRequestStatus;
-public partial class UpdateLeaveRequestStatusCommandTests
+namespace Application.Tests.Commands.UpdateLeaveRequest;
+public partial class UpdateLeaveRequestCommandTests
 {
     [Fact(DisplayName = "new UpdateLeaveRequestStatusCommandHandler with null repository")]
     public void WithNullRepository_Should_ThrowException()
     {
         // Arrange & act
-        var act = () => new UpdateLeaveRequestStatusCommandHandler(
+        var act = () => new UpdateLeaveRequestCommandHandler(
             _logger,
             _validator,
             null!,
@@ -25,7 +26,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
     public void WithNullLogger_Should_ThrowException()
     {
         // Arrange & act
-        var act = () => new UpdateLeaveRequestStatusCommandHandler(
+        var act = () => new UpdateLeaveRequestCommandHandler(
             null!,
             _validator,
             _leaveRequestRepository,
@@ -39,7 +40,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
     public void WithNullUnitOfWork_Should_ThrowException()
     {
         // Arrange & act
-        var act = () => new UpdateLeaveRequestStatusCommandHandler(
+        var act = () => new UpdateLeaveRequestCommandHandler(
             _logger,
             _validator,
             _leaveRequestRepository,
@@ -54,15 +55,16 @@ public partial class UpdateLeaveRequestStatusCommandTests
     {
         //Arrange
         var expectedLeaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(1),
             submittedBy: new UserId(3),
             leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(20),
             endDate: DateTime.UtcNow.AddDays(30),
             comment: "validate with my team.");
 
-        var command = new UpdateLeaveRequestStatusCommand(
-            LeaveRequestId: new LeaveRequestId(1),
-            NewStatus: LeaveRequestStatus.Approved);
+        var command = new UpdateLeaveRequestCommand(
+            LeaveRequestId: 1,
+            NewStatus: "Approved");
 
         _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(expectedLeaveRequest);
@@ -79,9 +81,9 @@ public partial class UpdateLeaveRequestStatusCommandTests
     public async Task Handle_Should_ReturnsFailure()
     {
         //Arrange
-        var command = new UpdateLeaveRequestStatusCommand(
-            LeaveRequestId: new LeaveRequestId(1),
-            NewStatus: LeaveRequestStatus.Approved);
+        var command = new UpdateLeaveRequestCommand(
+            LeaveRequestId: 1,
+            NewStatus: "Approved");
 
         _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(Task.FromResult<LeaveRequest?>(null));
@@ -93,5 +95,4 @@ public partial class UpdateLeaveRequestStatusCommandTests
         //Assert
         result.IsFailure.Should().BeTrue();
     }
-
 }

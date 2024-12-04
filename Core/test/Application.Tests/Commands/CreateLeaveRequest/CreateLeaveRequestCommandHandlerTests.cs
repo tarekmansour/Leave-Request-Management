@@ -1,6 +1,4 @@
 ﻿using Application.Commands.CreateLeaveRequest;
-using Domain.ValueObjects;
-using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 
 namespace Application.Tests.Commands.CreateLeaveRequest;
@@ -53,8 +51,8 @@ public partial class CreateLeaveRequestCommandTests
     {
         //Arrange
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: new UserId(2),
-            LeaveType: LeaveType.Off,
+            SubmittedBy: 2,
+            LeaveType: "off",
             StartDate: DateTime.UtcNow.AddDays(7),
             EndDate: DateTime.UtcNow.AddDays(10));
 

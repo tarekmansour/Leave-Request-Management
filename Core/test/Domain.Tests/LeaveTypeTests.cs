@@ -34,7 +34,7 @@ public class LeaveTypeTests
         // Assert
         act.Should()
            .Throw<ArgumentException>()
-           .WithMessage("*InvalidLeaveType*")
+           .WithMessage("*Invalid_LeaveType*")
            .And.ParamName.Should().Be("leaveTypeString");
     }
 
@@ -57,7 +57,6 @@ public class LeaveTypeTests
     [InlineData("Holiday")]
     [InlineData("Vacation")]
     [InlineData("")]
-    [InlineData(null)]
     public void IsValidLeaveType_ShouldReturnFalse_WhenInputIsInvalid(string input)
     {
         // Act

@@ -1,6 +1,5 @@
 ﻿using Application.Commands.CreateLeaveRequest;
 using Domain.Errors;
-using Domain.ValueObjects;
 using FluentAssertions;
 
 namespace Application.Tests.Commands.CreateLeaveRequest;
@@ -12,8 +11,8 @@ public partial class CreateLeaveRequestCommandTests
     {
         //Arrange
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: null!,
-            LeaveType: LeaveType.Off,
+            SubmittedBy: 1,
+            LeaveType: "invalidLeaveType",
             StartDate: DateTime.UtcNow.AddDays(1),
             EndDate: DateTime.UtcNow.AddDays(5));
 
@@ -23,7 +22,7 @@ public partial class CreateLeaveRequestCommandTests
         //Assert
         result.IsFailure.Should().BeTrue();
         result.Errors.Should().HaveCount(1);
-        result.Errors.FirstOrDefault()!.Code.Should().Be(LeaveRequestErrorCodes.InvalidUserId);
-        result.Errors.FirstOrDefault()!.Description.Should().Be(LeaveRequestErrorMessages.UserIdShouldNotBeNull);
+        result.Errors.FirstOrDefault()!.Code.Should().Be(LeaveRequestErrorCodes.InvalidLeaveType);
+        result.Errors.FirstOrDefault()!.Description.Should().Be(LeaveRequestErrorMessages.LeaveTypeNotSupported);
     }
 }
