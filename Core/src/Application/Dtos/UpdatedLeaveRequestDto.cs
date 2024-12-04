@@ -1,9 +1,8 @@
-﻿using Domain.ValueObjects.Identifiers;
-
-namespace Application.Dtos;
+﻿namespace Application.Dtos;
 public record UpdatedLeaveRequestDto(
-    LeaveRequestId Id,
-    UserId SubmittedBy,
+    int Id,
+    int SubmittedBy,
+    string LeaveType,
     DateTime StartDate,
     DateTime EndDate,
     string Status,

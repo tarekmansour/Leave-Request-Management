@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Domain.Entities;
 using Domain.Repositories;
+using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
 using Infrastructure.Repositories;
@@ -31,7 +32,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         // Arrange
         var leaveRequest = new LeaveRequest(
             submittedBy: new UserId(2),
-            leaveTypeId: new LeaveTypeId(1),
+            leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(1),
             endDate: DateTime.UtcNow.AddDays(5),
             comment: "new holidays");
@@ -53,7 +54,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         var leaveRequest = new LeaveRequest(
             id: leaveRequestId,
             submittedBy: new UserId(1),
-            leaveTypeId: new LeaveTypeId(4),
+            leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(1),
             endDate: DateTime.UtcNow.AddDays(5),
             comment: "paternity days off");

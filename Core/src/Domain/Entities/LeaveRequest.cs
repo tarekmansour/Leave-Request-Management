@@ -1,4 +1,5 @@
 ﻿using Domain.Errors;
+using Domain.Exceptions;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 
@@ -7,7 +8,7 @@ public sealed class LeaveRequest
 {
     public LeaveRequestId Id { get; private set; } = default!;
     public UserId SubmittedBy { get; private set; } = default!;
-    public LeaveTypeId LeaveTypeId { get; private set; } = default!;
+    public LeaveType LeaveType { get; private set; } = default!;
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
     public LeaveRequestStatus Status { get; private set; } = default!;
@@ -20,7 +21,7 @@ public sealed class LeaveRequest
 
     public LeaveRequest(
         UserId submittedBy,
-        LeaveTypeId leaveTypeId,
+        LeaveType leaveType,
         DateTime startDate,
         DateTime endDate,
         string? comment = null)
@@ -29,10 +30,10 @@ public sealed class LeaveRequest
             throw new ArgumentException(LeaveRequestErrorMessages.StartDateShouldNotBeInPast);
 
         if (endDate <= startDate)
-            throw new ArgumentException(LeaveRequestErrorMessages.EndDateShouldBeGraterThanStartDate);
+            throw new ArgumentException(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
 
         SubmittedBy = submittedBy;
-        LeaveTypeId = leaveTypeId;
+        LeaveType = leaveType;
         StartDate = startDate;
         EndDate = endDate;
         Status = LeaveRequestStatus.Pending;
@@ -43,25 +44,55 @@ public sealed class LeaveRequest
     public LeaveRequest(
         LeaveRequestId id,
         UserId submittedBy,
-        LeaveTypeId leaveTypeId,
+        LeaveType leaveType,
         DateTime startDate,
         DateTime endDate,
         string? comment)
     {
         Id = id;
         SubmittedBy = submittedBy;
-        LeaveTypeId = leaveTypeId;
+        LeaveType = leaveType;
         StartDate = startDate;
         EndDate = endDate;
         Comment = comment;
     }
 
-    public void UpdateStatus(
-        LeaveRequestStatus status,
-        UserId decidedBy,
-        string? decisionReason = null)
+    public void UpdateLeaveType(LeaveType newLeaveType)
     {
-        Status = status;
+        if (LeaveType == newLeaveType)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.InvalidNewLeaveType);
+
+        LeaveType = newLeaveType;
+    }
+
+    public void UpdateStartDate(DateTime newStartDate)
+    {
+        if (newStartDate <= DateTime.UtcNow)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.StartDateShouldNotBeInPast);
+
+        if (newStartDate >= EndDate)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.StartDateShouldBeBeforeEndDate);
+
+        StartDate = newStartDate;
+    }
+
+    public void UpdateEndDate(DateTime newEndDate)
+    {
+        if (newEndDate <= StartDate)
+            throw new InvalidOperationException(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
+
+        EndDate = newEndDate;
+    }
+
+    public void UpdateStatus(
+        LeaveRequestStatus newStatus,
+        UserId decidedBy,
+        string? decisionReason)
+    {
+        if (decidedBy == null)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.ValidUserShouldApproveLeaveRequest);
+
+        Status = newStatus;
         DecidedBy = decidedBy;
         DecisionReason = decisionReason;
     }

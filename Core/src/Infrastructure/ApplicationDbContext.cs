@@ -14,5 +14,4 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<LeaveRequest> LeaveRequests { get; set; } = default!;
-    public DbSet<LeaveType> LeaveTypes { get; set; } = default!;
 }

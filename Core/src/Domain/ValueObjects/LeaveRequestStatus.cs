@@ -1,4 +1,6 @@
-﻿namespace Domain.ValueObjects;
+﻿using Domain.Errors;
+
+namespace Domain.ValueObjects;
 
 public record LeaveRequestStatus
 {
@@ -13,4 +15,25 @@ public record LeaveRequestStatus
     }
 
     public override string ToString() => Value;
+
+    private static readonly Dictionary<string, LeaveRequestStatus> _leaveRequestStatus = new(StringComparer.OrdinalIgnoreCase)
+    {
+        { Pending.Value, Pending },
+        { Approved.Value, Approved },
+        { Rejected.Value, Rejected }
+    };
+
+    public static LeaveRequestStatus FromString(string leaveRequestStatusString)
+    {
+        if (_leaveRequestStatus.TryGetValue(leaveRequestStatusString, out var leaveRequestStatus))
+        {
+            return leaveRequestStatus;
+        }
+        throw new ArgumentException(LeaveRequestErrorCodes.InvalidLeaveRequestStatus, nameof(leaveRequestStatusString));
+    }
+
+    public static bool IsValidLeaveRequestStatus(string? leaveRequestStatusString)
+    {
+        return _leaveRequestStatus.ContainsKey(leaveRequestStatusString!);
+    }
 }

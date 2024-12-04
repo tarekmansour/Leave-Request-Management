@@ -26,7 +26,7 @@ public class UsersController : ControllerBase
     [SwaggerResponse(400, "Validation errors occurred.")]
     public async Task<IActionResult> Register(
         [FromBody] RegisterUserRequest request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var command = new RegisterUserCommand(
             Email: request.Email,
@@ -49,7 +49,7 @@ public class UsersController : ControllerBase
     [SwaggerResponse(400, "Validation errors occurred.")]
     public async Task<IActionResult> Login(
         [FromBody] LoginUserRequest request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var command = new LoginUserCommand(
             Email: request.Email,

@@ -28,12 +28,12 @@ public sealed class LeaveRequestConfiguration : IEntityTypeConfiguration<LeaveRe
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired();
 
-        builder.HasOne<LeaveType>()
-            .WithMany()
-            .HasForeignKey(x => x.LeaveTypeId)
-            .HasConstraintName("FK_LeaveRequest_LeaveType")
-            .OnDelete(DeleteBehavior.Restrict)
-            .IsRequired();
+        builder.OwnsOne(x => x.LeaveType, leaveTypeBuilder =>
+        {
+            leaveTypeBuilder.Property(s => s.Value)
+            .HasColumnName("Type")
+            .HasColumnType("[varchar](50)");
+        });
 
         builder.Property(x => x.StartDate).IsRequired();
 

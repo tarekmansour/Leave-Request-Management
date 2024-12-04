@@ -15,14 +15,14 @@ public class LeaveRequestTests
     {
         // Arrange
         var submittedBy = new UserId(1);
-        var leaveTypeId = new LeaveTypeId(2);
+        var leaveType = LeaveType.Off;
         var startDate = DateTime.UtcNow.AddDays(1);
         var endDate = DateTime.UtcNow.AddDays(5);
 
         // Act
         var newLeaveRequest = new LeaveRequest(
             submittedBy: submittedBy,
-            leaveTypeId: leaveTypeId,
+            leaveType: leaveType,
             startDate: startDate,
             endDate: endDate);
 
@@ -35,20 +35,20 @@ public class LeaveRequestTests
     {
         // Arrange
         var submittedBy = new UserId(10);
-        var leaveTypeId = new LeaveTypeId(3);
+        var leaveType = LeaveType.SickLeave;
         var startDate = DateTime.UtcNow.AddDays(7);
         var endDate = DateTime.UtcNow.AddDays(2);
 
         // Act
         Func<LeaveRequest> newLeaveRequest = () => new LeaveRequest(
             submittedBy: submittedBy,
-            leaveTypeId: leaveTypeId,
+            leaveType: leaveType,
             startDate: startDate,
             endDate: endDate);
 
         // Assert
         newLeaveRequest.Should().Throw<ArgumentException>()
-            .WithMessage(LeaveRequestErrorMessages.EndDateShouldBeGraterThanStartDate);
+            .WithMessage(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
     }
 
     [Fact(DisplayName = "New Leave request with start date in the past")]
@@ -56,14 +56,14 @@ public class LeaveRequestTests
     {
         // Arrange
         var submittedBy = new UserId(10);
-        var leaveTypeId = new LeaveTypeId(3);
+        var leaveType = LeaveType.Off;
         var startDate = DateTime.UtcNow.AddDays(-2);
         var endDate = DateTime.UtcNow.AddDays(5);
 
         // Act
         Func<LeaveRequest> newLeaveRequest = () => new LeaveRequest(
             submittedBy: submittedBy,
-            leaveTypeId: leaveTypeId,
+            leaveType: leaveType,
             startDate: startDate,
             endDate: endDate);
 
@@ -78,14 +78,14 @@ public class LeaveRequestTests
         // Arrange
         var createdLeaveRequest = new LeaveRequest(
             submittedBy: new UserId(3),
-            leaveTypeId: new LeaveTypeId(4),
+            leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(10),
             endDate: DateTime.UtcNow.AddDays(20));
 
         var HRUserId = new UserId(1);
 
         // Act
-        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Approved, HRUserId);
+        createdLeaveRequest.UpdateProperties(LeaveRequestStatus.Approved, HRUserId);
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Approved);
@@ -99,14 +99,14 @@ public class LeaveRequestTests
         // Arrange
         var createdLeaveRequest = new LeaveRequest(
             submittedBy: new UserId(3),
-            leaveTypeId: new LeaveTypeId(4),
+            leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(10),
             endDate: DateTime.UtcNow.AddDays(20));
 
         var managerId = new UserId(2);
 
         // Act
-        createdLeaveRequest.UpdateStatus(LeaveRequestStatus.Rejected, managerId, "not valid period");
+        createdLeaveRequest.UpdateProperties(LeaveRequestStatus.Rejected, managerId, "not valid period");
 
         // Assert
         createdLeaveRequest.Status.Should().Be(LeaveRequestStatus.Rejected);

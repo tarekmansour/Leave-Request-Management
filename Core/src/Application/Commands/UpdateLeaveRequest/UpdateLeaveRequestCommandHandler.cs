@@ -1,6 +1,8 @@
 ﻿using Application.Dtos;
+using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
+using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentValidation;
 using MediatR;
@@ -8,17 +10,17 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using SharedKernel;
 
-namespace Application.Commands.UpdateLeaveRequestStatus;
-public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeaveRequestStatusCommand, Result<UpdatedLeaveRequestDto>>
+namespace Application.Commands.UpdateLeaveRequest;
+public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveRequestCommand, Result<UpdatedLeaveRequestDto>>
 {
     private readonly ILogger _logger;
-    private readonly IValidator<UpdateLeaveRequestStatusCommand> _commandValidator;
+    private readonly IValidator<UpdateLeaveRequestCommand> _commandValidator;
     private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateLeaveRequestStatusCommandHandler(
-        ILogger<UpdateLeaveRequestStatusCommandHandler> logger,
-        IValidator<UpdateLeaveRequestStatusCommand> commandValidator,
+    public UpdateLeaveRequestCommandHandler(
+        ILogger<UpdateLeaveRequestCommandHandler> logger,
+        IValidator<UpdateLeaveRequestCommand> commandValidator,
         ILeaveRequestRepository appointmentRepository,
         IUnitOfWork unitOfWork)
     {
@@ -28,7 +30,7 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
     }
 
-    public async Task<Result<UpdatedLeaveRequestDto>> Handle(UpdateLeaveRequestStatusCommand command, CancellationToken cancellationToken)
+    public async Task<Result<UpdatedLeaveRequestDto>> Handle(UpdateLeaveRequestCommand command, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(command));
 
@@ -36,7 +38,7 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
         if (!validationResult.IsValid)
         {
             _logger.LogWarning(
-                "New leave request is not valid with the following error codes '{ErrorCodes}'.",
+                "Updating leave request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
             return Result<UpdatedLeaveRequestDto>.Failure(
@@ -44,7 +46,7 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
                 .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
         }
 
-        var existingLeaveRequest = await _leaveRequestRepository.GetByIdAsync(command.LeaveRequestId, cancellationToken);
+        var existingLeaveRequest = await _leaveRequestRepository.GetByIdAsync(new LeaveRequestId(command.LeaveRequestId), cancellationToken);
 
         if (existingLeaveRequest is null)
         {
@@ -52,10 +54,7 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
             return Result<UpdatedLeaveRequestDto>.Failure(new Error(LeaveRequestErrorCodes.InvalidLeaveRequestId, LeaveRequestErrorMessages.NotFoundLeaveRequestToUpdate));
         }
 
-        existingLeaveRequest.UpdateStatus(
-            status: command.NewStatus,
-            decidedBy: new UserId(1),//todo: get id of validator
-            decisionReason: command.DecisionReason);
+        ApplyUpdates(command, existingLeaveRequest);
 
         await _unitOfWork.PersistChangesAsync(cancellationToken);
 
@@ -64,11 +63,30 @@ public class UpdateLeaveRequestStatusCommandHandler : IRequestHandler<UpdateLeav
                 command.NewStatus);
 
         return Result<UpdatedLeaveRequestDto>.Success(new UpdatedLeaveRequestDto(
-            Id: existingLeaveRequest.Id,
-            SubmittedBy: existingLeaveRequest.SubmittedBy,
+            Id: existingLeaveRequest.Id.Value,
+            SubmittedBy: existingLeaveRequest.SubmittedBy.Value,
+            LeaveType: existingLeaveRequest.LeaveType.ToString(),
             StartDate: existingLeaveRequest.StartDate,
             EndDate: existingLeaveRequest.EndDate,
             Status: existingLeaveRequest.Status.ToString(),
             DecisionReason: existingLeaveRequest.DecisionReason));
+    }
+
+    public static void ApplyUpdates(UpdateLeaveRequestCommand command, LeaveRequest leaveRequest)
+    {
+        if (!string.IsNullOrWhiteSpace(command.LeaveType))
+            leaveRequest.UpdateLeaveType(LeaveType.FromString(command.LeaveType));
+
+        if (command.StartDate.HasValue)
+            leaveRequest.UpdateStartDate(command.StartDate.Value);
+
+        if (command.EndDate.HasValue)
+            leaveRequest.UpdateEndDate(command.EndDate.Value);
+
+        if (!string.IsNullOrWhiteSpace(command.NewStatus))
+            leaveRequest.UpdateStatus(
+                LeaveRequestStatus.FromString(command.NewStatus),
+                new UserId(1),
+                command.DecisionReason);
     }
 }

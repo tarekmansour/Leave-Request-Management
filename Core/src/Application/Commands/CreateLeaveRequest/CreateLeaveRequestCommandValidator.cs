@@ -1,4 +1,5 @@
 ﻿using Domain.Errors;
+using Domain.ValueObjects;
 using FluentValidation;
 
 namespace Application.Commands.CreateLeaveRequest;
@@ -11,10 +12,16 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidUserId)
                 .WithMessage(LeaveRequestErrorMessages.UserIdShouldNotBeNull);
 
-        RuleFor(command => command.LeaveTypeId)
-            .NotNull()
-                .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveTypeId)
-                .WithMessage(LeaveRequestErrorMessages.LeaveTypeIdShouldNotBeNull);
+        RuleFor(command => command.LeaveType)
+            .NotEmpty()
+                .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveType)
+                .WithMessage(LeaveRequestErrorMessages.LeaveTypeShouldNotBeNullOrEmpty)
+            .Must((command, leaveType) =>
+            {
+                return LeaveType.IsValidLeaveType(leaveType);
+            })
+                .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveType)
+                .WithMessage(LeaveRequestErrorMessages.LeaveTypeNotSupported);
 
         RuleFor(command => command.StartDate)
             .NotEmpty()

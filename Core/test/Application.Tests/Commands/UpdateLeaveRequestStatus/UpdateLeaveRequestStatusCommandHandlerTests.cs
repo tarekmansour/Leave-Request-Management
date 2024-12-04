@@ -1,5 +1,4 @@
-﻿using Application.Commands.UpdateLeaveRequestStatus;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
@@ -56,7 +55,7 @@ public partial class UpdateLeaveRequestStatusCommandTests
         //Arrange
         var expectedLeaveRequest = new LeaveRequest(
             submittedBy: new UserId(3),
-            leaveTypeId: new LeaveTypeId(1),
+            leaveType: LeaveType.Off,
             startDate: DateTime.UtcNow.AddDays(20),
             endDate: DateTime.UtcNow.AddDays(30),
             comment: "validate with my team.");

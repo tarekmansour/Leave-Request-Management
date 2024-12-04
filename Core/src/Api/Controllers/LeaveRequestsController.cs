@@ -1,9 +1,11 @@
 ﻿using Api.Requests;
 using Application.Commands.CreateLeaveRequest;
+using Application.Commands.UpdateLeaveRequest;
+using Application.Dtos;
 using Asp.Versioning;
-using Domain.ValueObjects.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
@@ -25,11 +27,11 @@ public class LeaveRequestsController : ControllerBase
     [SwaggerResponse(400, "Validation errors occurred.")]
     public async Task<IActionResult> CreateLeaveRequestAsync(
             [FromBody] CreateLeaveRequest request,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
     {
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: new UserId(request.SubmittedBy),
-            LeaveTypeId: new LeaveTypeId(request.LeaveTypeId),
+            SubmittedBy: request.SubmittedBy,
+            LeaveType: request.LeaveType.ToString(),
             StartDate: request.StartDate,
             EndDate: request.EndDate,
             Comment: request.Comment);
@@ -39,5 +41,32 @@ public class LeaveRequestsController : ControllerBase
         return result.IsFailure
                 ? BadRequest(result.Errors)
                 : Ok(result.Value);
+    }
+
+    [HttpPatch("{id}")]
+    [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
+    [SwaggerResponse(400, "Validation errors occurred.")]
+    [SwaggerOperation(Summary = "Update existing leave request.")]
+    public async Task<IActionResult> UpdateLeaveRequestAsync(
+        int id,
+        [FromBody] UpdateLeaveRequest updateLeaveRequest,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new UpdateLeaveRequestCommand(
+            LeaveRequestId: id,
+            LeaveType: updateLeaveRequest.LeaveType.ToString(),
+            StartDate: updateLeaveRequest.StartDate,
+            EndDate: updateLeaveRequest.EndDate,
+            NewStatus: updateLeaveRequest.NewStatus.ToString(),
+            Comment: updateLeaveRequest.Comment,
+            DecisionReason: updateLeaveRequest.DecisionReason);
+
+        var result = await _mediator.Send(command, cancellationToken);
+
+        return result.IsFailure
+            ? BadRequest(result.Errors is IEnumerable<Error> errorList && errorList.Any()
+                ? errorList
+                : result.Error)
+            : Ok(result.Value);
     }
 }
