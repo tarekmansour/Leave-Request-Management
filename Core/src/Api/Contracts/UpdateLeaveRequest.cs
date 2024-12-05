@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Api.Contracts;
+﻿namespace Api.Contracts;
 
 public record UpdateLeaveRequest(
-    [Required] int LeaveRequestId,
     LeaveType? LeaveType,
     DateTime? StartDate,
     DateTime? EndDate,

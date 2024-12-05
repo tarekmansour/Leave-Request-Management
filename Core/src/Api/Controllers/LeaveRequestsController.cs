@@ -24,11 +24,11 @@ public class LeaveRequestsController : ControllerBase
     public LeaveRequestsController(IMediator mediator)
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-    [Authorize(Roles = Roles.Employee)]
     [HttpPost]
     [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
     [SwaggerResponse(200, Type = typeof(int))]
     [SwaggerResponse(400, "Validation errors occurred.")]
+    [SwaggerResponse(401, "Unauthorized user.")]
     public async Task<IActionResult> CreateLeaveRequestAsync(
             [FromBody] CreateLeaveRequest request,
             CancellationToken cancellationToken = default)
