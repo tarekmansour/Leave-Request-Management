@@ -82,4 +82,57 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         // Assert
         result.Should().BeNull();
     }
+
+    [Fact(DisplayName = "List leave requests by user")]
+    public async Task GetLeaveRequestsAsync_ShouldReturn_AllRequests()
+    {
+        // Arrange
+        var userId = new UserId(1);
+        var HRUserId = new UserId(2);
+
+        var myFirstLeaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(1),
+            submittedBy: userId,
+            leaveType: LeaveType.Paternity,
+            startDate: DateTime.UtcNow.AddDays(10),
+            endDate: DateTime.UtcNow.AddDays(25),
+            comment: "paternity days off");
+
+        var mySecondLeaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(2),
+            submittedBy: userId,
+            leaveType: LeaveType.Off,
+            startDate: DateTime.UtcNow.AddDays(30),
+            endDate: DateTime.UtcNow.AddDays(36),
+            comment: "just off");
+
+        mySecondLeaveRequest.UpdateStatus(newStatus: LeaveRequestStatus.Rejected, decidedBy: HRUserId, decisionReason: "HR rejection!");
+
+        await _dbContext.LeaveRequests.AddRangeAsync(myFirstLeaveRequest, mySecondLeaveRequest);
+        await _dbContext.SaveChangesAsync();
+
+
+        // Act
+        var result = await _sut.GetLeaveRequestsAsync(userId);
+
+        // Assert
+        result.Count().Should().Be(2);
+        result.ElementAt(0)?.LeaveType.Should().Be(LeaveType.Paternity);
+        result.ElementAt(0)?.Status.Should().Be(LeaveRequestStatus.Pending);
+
+        result.ElementAt(1)?.LeaveType.Should().Be(LeaveType.Off);
+        result.ElementAt(1)?.Status.Should().Be(LeaveRequestStatus.Rejected);
+        result.ElementAt(1)?.DecidedBy.Should().Be(HRUserId);
+        result.ElementAt(1)?.DecisionReason.Should().Be("HR rejection!");
+    }
+
+    [Fact(DisplayName = "List leave requests by user returns empty list")]
+    public async Task GetLeaveRequestsAsync_ShouldReturn_EmptyList()
+    {
+        // Arrange & Act
+        var result = await _sut.GetLeaveRequestsAsync(new UserId(1));
+
+        // Assert
+        result.Count().Should().Be(0);
+    }
 }

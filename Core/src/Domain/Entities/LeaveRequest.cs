@@ -54,6 +54,8 @@ public sealed class LeaveRequest
         LeaveType = leaveType;
         StartDate = startDate;
         EndDate = endDate;
+        Status = LeaveRequestStatus.Pending;
+        RequestDate = DateTime.UtcNow;
         Comment = comment;
     }
 

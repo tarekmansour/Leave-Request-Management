@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Domain.ValueObjects.Identifiers;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 public class LeaveRequestRepository : ILeaveRequestRepository
@@ -19,5 +20,10 @@ public class LeaveRequestRepository : ILeaveRequestRepository
     public async Task<LeaveRequest?> GetByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.LeaveRequests.FindAsync(leaveRequestId, cancellationToken);
+    }
+
+    public async Task<IEnumerable<LeaveRequest?>> GetLeaveRequestsAsync(UserId userId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.LeaveRequests.Where(x => x.SubmittedBy == userId).ToListAsync(cancellationToken);
     }
 }

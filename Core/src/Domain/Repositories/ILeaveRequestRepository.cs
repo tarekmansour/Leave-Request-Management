@@ -6,4 +6,5 @@ public interface ILeaveRequestRepository
 {
     Task<LeaveRequestId> CreateAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default);
     Task<LeaveRequest?> GetByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<LeaveRequest?>> GetLeaveRequestsAsync(UserId userId, CancellationToken cancellationToken = default);
 }
