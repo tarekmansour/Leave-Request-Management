@@ -51,7 +51,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         if (userExists)
         {
             _logger.LogWarning("The user email is not unique with email '{Email}'.", command.Email);
-
             return Result<int>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserEmailNotUnique));
         }
 
