@@ -116,7 +116,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
 
 
         // Act
-        var result = await _sut.GetLeaveRequestsAsync(userId, null);
+        var result = await _sut.GetAllByUserAsync(userId, null);
 
         // Assert
         result.Count.Should().Be(2);
@@ -133,7 +133,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
     public async Task GetLeaveRequestsAsync_ShouldReturn_EmptyList()
     {
         // Arrange & Act
-        var result = await _sut.GetLeaveRequestsAsync(new UserId(1), null);
+        var result = await _sut.GetAllByUserAsync(new UserId(1), null);
 
         // Assert
         result.Count().Should().Be(0);
@@ -169,7 +169,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
 
 
         // Act
-        var result = await _sut.GetLeaveRequestsAsync(userId, LeaveRequestStatus.Pending);
+        var result = await _sut.GetAllByUserAsync(userId, LeaveRequestStatus.Pending);
 
         // Assert
         result.Count.Should().Be(1);

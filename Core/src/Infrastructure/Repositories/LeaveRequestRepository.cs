@@ -27,7 +27,7 @@ public class LeaveRequestRepository : ILeaveRequestRepository
         return await _dbContext.LeaveRequests.FindAsync(leaveRequestId, cancellationToken);
     }
 
-    public async Task<IReadOnlyCollection<LeaveRequest?>> GetLeaveRequestsAsync(
+    public async Task<IReadOnlyCollection<LeaveRequest>> GetAllByUserAsync(
         UserId userId,
         LeaveRequestStatus? status,
         CancellationToken cancellationToken = default)

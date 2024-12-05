@@ -11,7 +11,7 @@ public interface ILeaveRequestRepository
     Task<LeaveRequest?> GetByIdAsync(
         LeaveRequestId leaveRequestId,
         CancellationToken cancellationToken = default);
-    Task<IReadOnlyCollection<LeaveRequest?>> GetLeaveRequestsAsync(
+    Task<IReadOnlyCollection<LeaveRequest>> GetAllByUserAsync(
         UserId userId,
         LeaveRequestStatus? status,
         CancellationToken cancellationToken = default);

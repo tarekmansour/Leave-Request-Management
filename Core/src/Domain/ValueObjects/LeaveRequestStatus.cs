@@ -32,6 +32,15 @@ public record LeaveRequestStatus
         throw new ArgumentException(LeaveRequestErrorCodes.InvalidLeaveRequestStatus, nameof(leaveRequestStatusString));
     }
 
+    public static LeaveRequestStatus? FromNullableString(string? leaveRequestStatusString)
+    {
+        if (leaveRequestStatusString == null)
+        {
+            return null;
+        }
+        return FromString(leaveRequestStatusString);
+    }
+
     public static bool IsValidLeaveRequestStatus(string? leaveRequestStatusString)
     {
         return _leaveRequestStatus.ContainsKey(leaveRequestStatusString!);

@@ -66,14 +66,7 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
                 command.LeaveRequestId,
                 command.Status);
 
-        return Result<UpdatedLeaveRequestDto>.Success(new UpdatedLeaveRequestDto(
-            Id: existingLeaveRequest.Id.Value,
-            SubmittedBy: existingLeaveRequest.SubmittedBy.Value,
-            LeaveType: existingLeaveRequest.LeaveType.ToString(),
-            StartDate: existingLeaveRequest.StartDate,
-            EndDate: existingLeaveRequest.EndDate,
-            Status: existingLeaveRequest.Status.ToString(),
-            DecisionReason: existingLeaveRequest.DecisionReason));
+        return Result<UpdatedLeaveRequestDto>.Success(existingLeaveRequest.MapToUpdatedLeaveRequestDto());
     }
 
     public void ApplyUpdates(UpdateLeaveRequestCommand command, LeaveRequest leaveRequest)

@@ -46,7 +46,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
                 .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
         }
 
-        var userExists = await _userRepository.ExistsAsync(command.Email, cancellationToken);
+        var userExists = await _userRepository.ExistsByEmailAsync(command.Email, cancellationToken);
 
         if (userExists)
         {

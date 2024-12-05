@@ -17,4 +17,5 @@ public static class LeaveRequestErrorMessages
     public static readonly string InvalidNewLeaveType = "The new leave type is the same as the current leave type.";
     public static readonly string StartDateShouldBeBeforeEndDate = "The start date should be before the end date.";
     public static readonly string UnsupportedStatusUpdate = "Unsupported status update.";
+    public static readonly string UserNotFound = "User Id not valid. The user is not found.";
 }
