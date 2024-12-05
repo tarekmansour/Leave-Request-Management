@@ -11,7 +11,6 @@ public partial class CreateLeaveRequestCommandTests
     {
         //Arrange
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: 1,
             LeaveType: "invalidLeaveType",
             StartDate: DateTime.UtcNow.AddDays(1),
             EndDate: DateTime.UtcNow.AddDays(5));

@@ -1,4 +1,5 @@
-﻿using Domain.Repositories;
+﻿using Application.Abstractions;
+using Domain.Repositories;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -12,17 +13,20 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
     private readonly IValidator<CreateLeaveRequestCommand> _commandValidator;
     private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserContext _userContext;
 
     public CreateLeaveRequestCommandHandler(
         ILogger<CreateLeaveRequestCommandHandler> logger,
         IValidator<CreateLeaveRequestCommand> commandValidator,
         ILeaveRequestRepository leaveRequestRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserContext userContext)
     {
         _logger = (ILogger)logger ?? NullLogger.Instance;
         _commandValidator = commandValidator ?? throw new ArgumentNullException(nameof(commandValidator));
         _leaveRequestRepository = leaveRequestRepository ?? throw new ArgumentNullException(nameof(leaveRequestRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
     }
 
     public async Task<Result<int>> Handle(CreateLeaveRequestCommand command, CancellationToken cancellationToken)
@@ -41,11 +45,11 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
                 .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
         }
 
-        var createdLeaveRequestId = await _leaveRequestRepository.CreateAsync(command.MapToLeaveRequest(), cancellationToken);
+        var createdLeaveRequestId = await _leaveRequestRepository.CreateAsync(command.MapToLeaveRequest(_userContext.UserId), cancellationToken);
         await _unitOfWork.PersistChangesAsync(cancellationToken);
 
         _logger.LogInformation("Successfully created leave request for user '{UserId}' from start date '{StartDate}' to end date '{EndDate}'.",
-                command.SubmittedBy,
+                _userContext.UserId,
                 command.StartDate,
                 command.EndDate);
 

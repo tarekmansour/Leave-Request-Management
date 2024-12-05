@@ -7,11 +7,6 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
 {
     public CreateLeaveRequestCommandValidator()
     {
-        RuleFor(command => command.SubmittedBy)
-            .NotNull()
-                .WithErrorCode(LeaveRequestErrorCodes.InvalidUserId)
-                .WithMessage(LeaveRequestErrorMessages.UserIdShouldNotBeNull);
-
         RuleFor(command => command.LeaveType)
             .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveType)

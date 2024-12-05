@@ -16,7 +16,8 @@ public partial class UpdateLeaveRequestCommandTests
             _logger,
             _validator,
             null!,
-            _unitOfWork);
+            _unitOfWork,
+            _userContext);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -30,7 +31,8 @@ public partial class UpdateLeaveRequestCommandTests
             null!,
             _validator,
             _leaveRequestRepository,
-            _unitOfWork);
+            _unitOfWork,
+            _userContext);
 
         // Assert
         act.Should().NotThrow();
@@ -44,7 +46,8 @@ public partial class UpdateLeaveRequestCommandTests
             _logger,
             _validator,
             _leaveRequestRepository,
-            null!);
+            null!,
+            _userContext);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -54,6 +57,9 @@ public partial class UpdateLeaveRequestCommandTests
     public async Task Handle_Should_ReturnsSuccessfulResult()
     {
         //Arrange
+        const int mockUserId = 1;
+        _userContext.UserId.Returns(mockUserId);
+
         var expectedLeaveRequest = new LeaveRequest(
             id: new LeaveRequestId(1),
             submittedBy: new UserId(3),

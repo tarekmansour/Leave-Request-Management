@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Application.Abstractions;
 using Domain.Repositories;
 using Infrastructure.Authentication;
@@ -18,8 +20,8 @@ public static class DependencyInjection
         services
             .AddServices()
             .AddInMemoryDatabase()
-            .AddAuthorization()
-            .AddAuthenticationInternal(configuration);
+            .AddAuthenticationInternal(configuration)
+            .AddAuthorization();
 
     private static IServiceCollection AddInMemoryDatabase(this IServiceCollection services)
     {
@@ -48,28 +50,23 @@ public static class DependencyInjection
                 o.RequireHttpsMetadata = false;
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]!)),
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    //ClockSkew = TimeSpan.Zero //do not accept expired tokens
+                    NameClaimType = JwtRegisteredClaimNames.Sub,
+                    RoleClaimType = ClaimTypes.Role,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserContext, UserContext>();
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddSingleton<ITokenProvider, TokenProvider>();
 
         return services;
     }
-
-    //private static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
-    //{
-    //    services.AddAuthorization(options =>
-    //    {
-    //        options.AddPolicy(Policy.Validator.ToString(), policy =>
-    //            policy.RequireClaim("Permission", "Validator"));
-    //    });
-
-    //    return services;
-    //}
-
 }

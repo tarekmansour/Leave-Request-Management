@@ -3,6 +3,7 @@ using Application.Commands.CreateLeaveRequest;
 using Application.Commands.UpdateLeaveRequest;
 using Application.Dtos;
 using Asp.Versioning;
+using Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
 
+[Authorize]
 [ApiController]
 [ApiVersion(1.0)]
 [Route("api/v{apiVersion:apiVersion}/[controller]")]
@@ -22,7 +24,7 @@ public class LeaveRequestsController : ControllerBase
     public LeaveRequestsController(IMediator mediator)
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-    [Authorize(Roles = "Employee")]
+    [Authorize(Roles = Roles.Employee)]
     [HttpPost]
     [SwaggerOperation(Summary = "Submits a new leave request for a user.")]
     [SwaggerResponse(200, Type = typeof(int))]
@@ -32,7 +34,6 @@ public class LeaveRequestsController : ControllerBase
             CancellationToken cancellationToken = default)
     {
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: request.SubmittedBy,
             LeaveType: request.LeaveType.ToString(),
             StartDate: request.StartDate,
             EndDate: request.EndDate,
@@ -45,7 +46,7 @@ public class LeaveRequestsController : ControllerBase
                 : Ok(result.Value);
     }
 
-    [Authorize(Roles = "Admin,HR")]
+    [Authorize(Roles = Roles.HR)]
     [HttpPatch("{id}")]
     [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]

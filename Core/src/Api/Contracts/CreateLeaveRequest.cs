@@ -3,7 +3,6 @@
 namespace Api.Contracts;
 
 public record CreateLeaveRequest(
-    [Required] int SubmittedBy,
     [Required] LeaveType LeaveType,
     [Required] DateTime StartDate,
     [Required] DateTime EndDate,

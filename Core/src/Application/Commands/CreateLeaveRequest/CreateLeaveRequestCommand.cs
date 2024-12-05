@@ -3,7 +3,6 @@ using SharedKernel;
 
 namespace Application.Commands.CreateLeaveRequest;
 public record CreateLeaveRequestCommand(
-    int SubmittedBy,
     string LeaveType,
     DateTime StartDate,
     DateTime EndDate,

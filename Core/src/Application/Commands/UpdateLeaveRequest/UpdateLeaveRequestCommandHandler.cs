@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Abstractions;
+using Application.Dtos;
 using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
@@ -17,17 +18,20 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
     private readonly IValidator<UpdateLeaveRequestCommand> _commandValidator;
     private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserContext _userContext;
 
     public UpdateLeaveRequestCommandHandler(
         ILogger<UpdateLeaveRequestCommandHandler> logger,
         IValidator<UpdateLeaveRequestCommand> commandValidator,
         ILeaveRequestRepository appointmentRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IUserContext userContext)
     {
         _logger = (ILogger)logger ?? NullLogger.Instance;
         _commandValidator = commandValidator ?? throw new ArgumentNullException(nameof(commandValidator));
         _leaveRequestRepository = appointmentRepository ?? throw new ArgumentNullException(nameof(appointmentRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
     }
 
     public async Task<Result<UpdatedLeaveRequestDto>> Handle(UpdateLeaveRequestCommand command, CancellationToken cancellationToken)
@@ -72,7 +76,7 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
             DecisionReason: existingLeaveRequest.DecisionReason));
     }
 
-    public static void ApplyUpdates(UpdateLeaveRequestCommand command, LeaveRequest leaveRequest)
+    public void ApplyUpdates(UpdateLeaveRequestCommand command, LeaveRequest leaveRequest)
     {
         if (!string.IsNullOrWhiteSpace(command.LeaveType))
             leaveRequest.UpdateLeaveType(LeaveType.FromString(command.LeaveType));
@@ -86,7 +90,7 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         if (!string.IsNullOrWhiteSpace(command.NewStatus))
             leaveRequest.UpdateStatus(
                 LeaveRequestStatus.FromString(command.NewStatus),
-                new UserId(1),
+                new UserId(_userContext.UserId),
                 command.DecisionReason);
     }
 }

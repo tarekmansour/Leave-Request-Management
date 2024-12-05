@@ -6,10 +6,10 @@ using Domain.ValueObjects.Identifiers;
 namespace Application;
 public static class MappingExtensions
 {
-    public static LeaveRequest MapToLeaveRequest(this CreateLeaveRequestCommand command)
+    public static LeaveRequest MapToLeaveRequest(this CreateLeaveRequestCommand command, int userId)
     {
         return new LeaveRequest(
-            submittedBy: new UserId(command.SubmittedBy),
+            submittedBy: new UserId(userId),
             leaveType: LeaveType.FromString(command.LeaveType),
             startDate: command.StartDate,
             endDate: command.EndDate,

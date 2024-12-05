@@ -38,12 +38,14 @@ public sealed class User
         string email,
         string firstName,
         string lastName,
-        string passwordHash)
+        string passwordHash,
+        IEnumerable<string> roles)
     {
         Id = id;
         Email = email;
         FirstName = firstName;
         LastName = lastName;
         PasswordHash = passwordHash;
+        Roles = roles;
     }
 }

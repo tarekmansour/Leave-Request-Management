@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Authentication;
-internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
+public sealed class TokenProvider(IConfiguration configuration) : ITokenProvider
 {
     public string GenerateToken(User user)
     {
@@ -18,7 +18,8 @@ internal sealed class TokenProvider(IConfiguration configuration) : ITokenProvid
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+            //new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.Value.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email)
         };
 

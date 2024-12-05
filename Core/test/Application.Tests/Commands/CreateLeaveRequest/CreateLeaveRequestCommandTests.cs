@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Application.Abstractions;
 using Application.Commands.CreateLeaveRequest;
 using Domain.Repositories;
 using Infrastructure;
@@ -16,6 +17,7 @@ public partial class CreateLeaveRequestCommandTests : DatabaseFixture
     private readonly CreateLeaveRequestCommandValidator _validator;
     private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserContext _userContext;
     private readonly CreateLeaveRequestCommandHandler _sut;
 
     public CreateLeaveRequestCommandTests()
@@ -24,6 +26,7 @@ public partial class CreateLeaveRequestCommandTests : DatabaseFixture
         _validator = new CreateLeaveRequestCommandValidator();
         _leaveRequestRepository = new LeaveRequestRepository(_dbContext);
         _unitOfWork = new UnitOfWork(_dbContext);
-        _sut = new CreateLeaveRequestCommandHandler(_logger, _validator, _leaveRequestRepository, _unitOfWork);
+        _userContext = Substitute.For<IUserContext>();
+        _sut = new CreateLeaveRequestCommandHandler(_logger, _validator, _leaveRequestRepository, _unitOfWork, _userContext);
     }
 }

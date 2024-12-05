@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Domain.Entities;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
@@ -32,7 +33,9 @@ public class TokenProviderTests
     public void GenerateToken_ShouldReturnValidToken()
     {
         // Arrange
-        var user = new User(new UserId(1), "test@example.com", "FirstName", "LastName", "pwd-hash");
+        var id = new UserId(1);
+        var roles = new List<string> { Roles.Employee };
+        var user = new User(id, "test@example.com", "FirstName", "LastName", "pwd-hash", roles);
 
         // Act
         var token = _tokenProvider.GenerateToken(user);
@@ -46,7 +49,7 @@ public class TokenProviderTests
         var jwtToken = handler.ReadJwtToken(token);
         jwtToken.Issuer.Should().Be("my_issuer");
         jwtToken.Audiences.Should().Contain("my_audience");
-        jwtToken.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Sub && c.Value == user.Id.ToString());
         jwtToken.Claims.Should().Contain(c => c.Type == JwtRegisteredClaimNames.Email && c.Value == user.Email);
+        jwtToken.Claims.Should().Contain(c => c.Type == ClaimTypes.Role && c.Value == Roles.Employee);
     }
 }

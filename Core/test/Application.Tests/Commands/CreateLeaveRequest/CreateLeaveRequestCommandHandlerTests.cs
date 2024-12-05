@@ -1,5 +1,6 @@
 ﻿using Application.Commands.CreateLeaveRequest;
 using FluentAssertions;
+using NSubstitute;
 
 namespace Application.Tests.Commands.CreateLeaveRequest;
 public partial class CreateLeaveRequestCommandTests
@@ -12,7 +13,8 @@ public partial class CreateLeaveRequestCommandTests
             _logger,
             _validator,
             null!,
-            _unitOfWork);
+            _unitOfWork,
+            _userContext);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -26,7 +28,8 @@ public partial class CreateLeaveRequestCommandTests
             null!,
             _validator,
             _leaveRequestRepository,
-            _unitOfWork);
+            _unitOfWork,
+            _userContext);
 
         // Assert
         act.Should().NotThrow();
@@ -40,7 +43,8 @@ public partial class CreateLeaveRequestCommandTests
             _logger,
             _validator,
             _leaveRequestRepository,
-            null!);
+            null!,
+            _userContext);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -50,8 +54,10 @@ public partial class CreateLeaveRequestCommandTests
     public async Task Handle_Should_ReturnsSuccessfulResult()
     {
         //Arrange
+        const int mockUserId = 1;
+        _userContext.UserId.Returns(mockUserId);
+
         var command = new CreateLeaveRequestCommand(
-            SubmittedBy: 2,
             LeaveType: "off",
             StartDate: DateTime.UtcNow.AddDays(7),
             EndDate: DateTime.UtcNow.AddDays(10));

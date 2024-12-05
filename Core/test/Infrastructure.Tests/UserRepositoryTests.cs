@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
+using Infrastructure.Authentication;
 using Infrastructure.Repositories;
 using SharedKernel.Tests;
 
@@ -19,7 +20,8 @@ public class UserRepositoryTests : DatabaseFixture
     public async Task GetByEmailAsync_ShouldReturnUser_WhenUserExists()
     {
         // Arrange
-        var user = new User(new UserId(1), "test@example.com", "John", "Doe", "hashedPassword");
+        var roles = new List<string> { Roles.Employee };
+        var user = new User(new UserId(1), "test@example.com", "John", "Doe", "hashedPassword", roles);
         await _dbContext.Users.AddAsync(user);
         await _dbContext.SaveChangesAsync();
 
@@ -45,7 +47,8 @@ public class UserRepositoryTests : DatabaseFixture
     public async Task CreateAsync_ShouldAddUserToDatabase()
     {
         // Arrange
-        var user = new User("newuser@example.com", "Jane", "Doe", "hashedPassword");
+        var roles = new List<string> { Roles.Employee };
+        var user = new User("newuser@example.com", "Jane", "Doe", "hashedPassword", roles);
 
         // Act
         var userId = await _sut.CreateAsync(user);
@@ -56,5 +59,6 @@ public class UserRepositoryTests : DatabaseFixture
         var retrievedUser = await _sut.GetByEmailAsync("newuser@example.com");
         retrievedUser.Should().NotBeNull();
         retrievedUser!.Email.Should().Be("newuser@example.com");
+        retrievedUser!.Roles.Equals(roles);
     }
 }
