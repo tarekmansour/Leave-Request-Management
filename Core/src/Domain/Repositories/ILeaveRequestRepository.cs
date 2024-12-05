@@ -1,10 +1,18 @@
 ﻿using Domain.Entities;
+using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 
 namespace Domain.Repositories;
 public interface ILeaveRequestRepository
 {
-    Task<LeaveRequestId> CreateAsync(LeaveRequest leaveRequest, CancellationToken cancellationToken = default);
-    Task<LeaveRequest?> GetByIdAsync(LeaveRequestId leaveRequestId, CancellationToken cancellationToken = default);
-    Task<IEnumerable<LeaveRequest?>> GetLeaveRequestsAsync(UserId userId, CancellationToken cancellationToken = default);
+    Task<LeaveRequestId> CreateAsync(
+        LeaveRequest leaveRequest,
+        CancellationToken cancellationToken = default);
+    Task<LeaveRequest?> GetByIdAsync(
+        LeaveRequestId leaveRequestId,
+        CancellationToken cancellationToken = default);
+    Task<IReadOnlyCollection<LeaveRequest?>> GetLeaveRequestsAsync(
+        UserId userId,
+        LeaveRequestStatus? status,
+        CancellationToken cancellationToken = default);
 }

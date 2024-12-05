@@ -106,17 +106,20 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
             endDate: DateTime.UtcNow.AddDays(36),
             comment: "just off");
 
-        mySecondLeaveRequest.UpdateStatus(newStatus: LeaveRequestStatus.Rejected, decidedBy: HRUserId, decisionReason: "HR rejection!");
+        mySecondLeaveRequest.UpdateStatus(
+            newStatus: LeaveRequestStatus.Rejected,
+            decidedBy: HRUserId,
+            decisionReason: "HR rejection!");
 
         await _dbContext.LeaveRequests.AddRangeAsync(myFirstLeaveRequest, mySecondLeaveRequest);
         await _dbContext.SaveChangesAsync();
 
 
         // Act
-        var result = await _sut.GetLeaveRequestsAsync(userId);
+        var result = await _sut.GetLeaveRequestsAsync(userId, null);
 
         // Assert
-        result.Count().Should().Be(2);
+        result.Count.Should().Be(2);
         result.ElementAt(0)?.LeaveType.Should().Be(LeaveType.Paternity);
         result.ElementAt(0)?.Status.Should().Be(LeaveRequestStatus.Pending);
 
@@ -130,9 +133,47 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
     public async Task GetLeaveRequestsAsync_ShouldReturn_EmptyList()
     {
         // Arrange & Act
-        var result = await _sut.GetLeaveRequestsAsync(new UserId(1));
+        var result = await _sut.GetLeaveRequestsAsync(new UserId(1), null);
 
         // Assert
         result.Count().Should().Be(0);
+    }
+
+    [Fact(DisplayName = "List leave requests by user with status filter")]
+    public async Task GetLeaveRequestsAsync_ShouldReturn_AllRequestsFilteredByStatus()
+    {
+        // Arrange
+        var userId = new UserId(1);
+        var HRUserId = new UserId(2);
+
+        var myFirstLeaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(1),
+            submittedBy: userId,
+            leaveType: LeaveType.Paternity,
+            startDate: DateTime.UtcNow.AddDays(10),
+            endDate: DateTime.UtcNow.AddDays(25),
+            comment: "paternity days off");
+
+        var mySecondLeaveRequest = new LeaveRequest(
+            id: new LeaveRequestId(2),
+            submittedBy: userId,
+            leaveType: LeaveType.SickLeave,
+            startDate: DateTime.UtcNow.AddDays(1),
+            endDate: DateTime.UtcNow.AddDays(2),
+            comment: "I'm sick");
+
+        myFirstLeaveRequest.UpdateStatus(newStatus: LeaveRequestStatus.Approved, decidedBy: HRUserId, null);
+
+        await _dbContext.LeaveRequests.AddRangeAsync(myFirstLeaveRequest, mySecondLeaveRequest);
+        await _dbContext.SaveChangesAsync();
+
+
+        // Act
+        var result = await _sut.GetLeaveRequestsAsync(userId, LeaveRequestStatus.Pending);
+
+        // Assert
+        result.Count.Should().Be(1);
+        result.FirstOrDefault()?.Status.Should().Be(LeaveRequestStatus.Pending);
+        result.FirstOrDefault()?.LeaveType.Should().Be(LeaveType.SickLeave);
     }
 }
