@@ -24,7 +24,7 @@ public class AdminLeaveRequestsController : ControllerBase
         => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
     [HttpPatch("{id}")]
-    [SwaggerOperation(Summary = "Update existing leave request.")]
+    [SwaggerOperation(Summary = "Update leave request status.")]
     [SwaggerResponse(200, Type = typeof(UpdatedLeaveRequestDto))]
     [SwaggerResponse(400, "Validation errors occurred.")]
     [SwaggerResponse(401, "Unauthorized user.")]
@@ -36,11 +36,7 @@ public class AdminLeaveRequestsController : ControllerBase
     {
         var command = new UpdateLeaveRequestCommand(
             LeaveRequestId: id,
-            LeaveType: updateLeaveRequest.LeaveType?.ToString(),
-            StartDate: updateLeaveRequest.StartDate,
-            EndDate: updateLeaveRequest.EndDate,
-            Status: updateLeaveRequest.Status?.ToString(),
-            Comment: updateLeaveRequest.Comment,
+            Status: updateLeaveRequest.Status.ToString(),
             DecisionReason: updateLeaveRequest.DecisionReason);
 
         var result = await _mediator.Send(command, cancellationToken);

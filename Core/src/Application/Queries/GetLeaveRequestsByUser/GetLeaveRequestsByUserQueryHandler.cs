@@ -9,23 +9,19 @@ using Microsoft.Extensions.Logging.Abstractions;
 using SharedKernel;
 
 namespace Application.Queries.GetLeaveRequestsByUser;
-internal class GetLeaveRequestsByUserQueryHandler : IRequestHandler<GetLeaveRequestsByUserQuery, Result<LeaveRequestsCollectionDto>>
+public class GetLeaveRequestsByUserQueryHandler : IRequestHandler<GetLeaveRequestsByUserQuery, Result<LeaveRequestsCollectionDto>>
 {
     private readonly ILogger _logger;
     private readonly ILeaveRequestRepository _leaveRequestRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IUserContext _userContext;
-
 
     public GetLeaveRequestsByUserQueryHandler(
         ILogger<GetLeaveRequestsByUserQueryHandler> logger,
         ILeaveRequestRepository leaveRequestRepository,
-        IUserRepository userRepository,
         IUserContext userContext)
     {
         _logger = (ILogger)logger ?? NullLogger.Instance;
         _leaveRequestRepository = leaveRequestRepository ?? throw new ArgumentNullException(nameof(leaveRequestRepository));
-        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
     }
 
@@ -37,6 +33,10 @@ internal class GetLeaveRequestsByUserQueryHandler : IRequestHandler<GetLeaveRequ
             userId: new UserId(_userContext.UserId),
             status: LeaveRequestStatus.FromNullableString(query.Status),
             cancellationToken);
+
+        _logger.LogInformation("The list of leave requests for user '{UserId}' was retrieved with count of '{Count}' .",
+            _userContext.UserId,
+            leaveRequests.Count);
 
         return Result<LeaveRequestsCollectionDto>.Success(leaveRequests.MapToLeaveRequestsCollectionDto());
     }

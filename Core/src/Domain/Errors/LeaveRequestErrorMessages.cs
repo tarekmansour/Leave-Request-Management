@@ -19,4 +19,5 @@ public static class LeaveRequestErrorMessages
     public static readonly string UnsupportedStatusUpdate = "Unsupported status update.";
     public static readonly string UserNotFound = "User Id not valid. The user is not found.";
     public static readonly string ForRejectedRequestsReasonShouldBeProvided = "For rejected requests a decision reason should be provided.";
+    public static readonly string UnsupportedStatus = "Unsupported status. Only 'Approved' or 'Rejected' values supported.";
 }

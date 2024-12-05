@@ -88,38 +88,14 @@ public sealed class LeaveRequest
         DecisionReason = decisionReason;
     }
 
-    public void UpdateLeaveType(LeaveType newLeaveType)
-    {
-        if (LeaveType == newLeaveType)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.InvalidNewLeaveType);
-
-        LeaveType = newLeaveType;
-    }
-
-    public void UpdateStartDate(DateTime newStartDate)
-    {
-        if (newStartDate <= DateTime.UtcNow)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.StartDateShouldNotBeInPast);
-
-        if (newStartDate >= EndDate)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.StartDateShouldBeBeforeEndDate);
-
-        StartDate = newStartDate;
-    }
-
-    public void UpdateEndDate(DateTime newEndDate)
-    {
-        if (newEndDate <= StartDate)
-            throw new InvalidOperationException(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
-
-        EndDate = newEndDate;
-    }
-
     public void UpdateStatus(
         LeaveRequestStatus newStatus,
         UserId decidedBy,
         string? decisionReason)
     {
+        if (newStatus != LeaveRequestStatus.Approved && newStatus != LeaveRequestStatus.Rejected)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.UnsupportedStatus);
+
         if (decidedBy == null)
             throw new LeaveRequestException(LeaveRequestErrorMessages.ValidUserShouldApproveLeaveRequest);
 

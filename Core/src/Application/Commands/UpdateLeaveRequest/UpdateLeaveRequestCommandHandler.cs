@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.Dtos;
-using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
 using Domain.ValueObjects;
@@ -58,7 +57,10 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
             return Result<UpdatedLeaveRequestDto>.Failure(new Error(LeaveRequestErrorCodes.InvalidLeaveRequestId, LeaveRequestErrorMessages.NotFoundLeaveRequestToUpdate));
         }
 
-        ApplyUpdates(command, existingLeaveRequest);
+        existingLeaveRequest.UpdateStatus(
+            LeaveRequestStatus.FromString(command.Status),
+            new UserId(_userContext.UserId),
+            command.DecisionReason);
 
         await _unitOfWork.PersistChangesAsync(cancellationToken);
 
@@ -67,23 +69,5 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
                 command.Status);
 
         return Result<UpdatedLeaveRequestDto>.Success(existingLeaveRequest.MapToUpdatedLeaveRequestDto());
-    }
-
-    public void ApplyUpdates(UpdateLeaveRequestCommand command, LeaveRequest leaveRequest)
-    {
-        if (!string.IsNullOrWhiteSpace(command.LeaveType))
-            leaveRequest.UpdateLeaveType(LeaveType.FromString(command.LeaveType));
-
-        if (command.StartDate.HasValue)
-            leaveRequest.UpdateStartDate(command.StartDate.Value);
-
-        if (command.EndDate.HasValue)
-            leaveRequest.UpdateEndDate(command.EndDate.Value);
-
-        if (!string.IsNullOrWhiteSpace(command.Status))
-            leaveRequest.UpdateStatus(
-                LeaveRequestStatus.FromString(command.Status),
-                new UserId(_userContext.UserId),
-                command.DecisionReason);
     }
 }
