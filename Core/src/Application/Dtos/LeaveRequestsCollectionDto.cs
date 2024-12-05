@@ -6,6 +6,6 @@ public record class LeaveRequestsCollectionDto(
     int Count = 0,
     IReadOnlyCollection<LeaveRequest>? Items = null)
 {
-    public static readonly LeaveRequestsCollectionDto Default = new LeaveRequestsCollectionDto();
+    public static readonly LeaveRequestsCollectionDto Default = new();
     public IReadOnlyCollection<LeaveRequest> Items { get; init; } = Items ?? [];
 }

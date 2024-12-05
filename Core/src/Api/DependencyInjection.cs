@@ -20,7 +20,11 @@ public static class DependencyInjection
         services.AddControllers()
             .AddJsonOptions(options =>
             {
+                // Add support for serializing enums as strings
                 options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+
+                // Ignore null values in JSON responses
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
             });
 
         return services;

@@ -210,6 +210,27 @@ public class LeaveRequestTests
             .WithMessage(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
     }
 
+    [Fact(DisplayName = "Throw exception when reject request without decision reason")]
+    public void UpdateEndDate_ShouldThrowException_WhenRejectedRequestWithoutReasonProvided()
+    {
+        // Arrange
+        var leaveRequest = new LeaveRequest(
+             submittedBy: new UserId(1),
+             leaveType: LeaveType.Off,
+             startDate: DateTime.UtcNow.AddDays(2),
+             endDate: DateTime.UtcNow.AddDays(3));
+
+        var newStatus = LeaveRequestStatus.Rejected;
+        var decidedBy = new UserId(2);
+
+        // Act
+        Action act = () => leaveRequest.UpdateStatus(newStatus, decidedBy, null);
+
+        // Assert
+        act.Should().Throw<LeaveRequestException>()
+            .WithMessage(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
+    }
+
     [Fact(DisplayName = "should update status when decided by a valid user")]
     public void UpdateStatus_ShouldUpdateStatus_WhenDecidedByValidUser()
     {

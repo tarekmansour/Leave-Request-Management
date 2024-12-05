@@ -12,7 +12,6 @@ public sealed class LeaveRequest
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
     public LeaveRequestStatus Status { get; private set; } = default!;
-    public DateTime RequestDate { get; private set; }
     public string? Comment { get; private set; }
     public UserId DecidedBy { get; private set; } = null!;
     public string? DecisionReason { get; private set; }
@@ -37,7 +36,6 @@ public sealed class LeaveRequest
         StartDate = startDate;
         EndDate = endDate;
         Status = LeaveRequestStatus.Pending;
-        RequestDate = DateTime.UtcNow;
         Comment = comment;
     }
 
@@ -55,8 +53,39 @@ public sealed class LeaveRequest
         StartDate = startDate;
         EndDate = endDate;
         Status = LeaveRequestStatus.Pending;
-        RequestDate = DateTime.UtcNow;
         Comment = comment;
+    }
+
+    public LeaveRequest(
+        LeaveRequestId id,
+        LeaveType leaveType,
+        DateTime startDate,
+        DateTime endDate,
+        LeaveRequestStatus status)
+    {
+        Id = id;
+        LeaveType = leaveType;
+        StartDate = startDate;
+        EndDate = endDate;
+        Status = status;
+    }
+
+    public LeaveRequest(
+        LeaveRequestId id,
+        LeaveType leaveType,
+        DateTime startDate,
+        DateTime endDate,
+        LeaveRequestStatus status,
+        UserId decidedBy,
+        string? decisionReason)
+    {
+        Id = id;
+        LeaveType = leaveType;
+        StartDate = startDate;
+        EndDate = endDate;
+        Status = status;
+        DecidedBy = decidedBy;
+        DecisionReason = decisionReason;
     }
 
     public void UpdateLeaveType(LeaveType newLeaveType)
@@ -93,6 +122,9 @@ public sealed class LeaveRequest
     {
         if (decidedBy == null)
             throw new LeaveRequestException(LeaveRequestErrorMessages.ValidUserShouldApproveLeaveRequest);
+
+        if (newStatus == LeaveRequestStatus.Rejected && decisionReason is null)
+            throw new LeaveRequestException(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
 
         Status = newStatus;
         DecidedBy = decidedBy;
