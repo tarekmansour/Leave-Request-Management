@@ -9,6 +9,6 @@ public record UpdateLeaveRequestCommand(
     string? LeaveType = null,
     DateTime? StartDate = null,
     DateTime? EndDate = null,
-    string? NewStatus = null,
+    string? Status = null,
     string? Comment = null,
     string? DecisionReason = null) : IRequest<Result<UpdatedLeaveRequestDto>>;

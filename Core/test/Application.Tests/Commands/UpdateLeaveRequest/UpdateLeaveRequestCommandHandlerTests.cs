@@ -70,7 +70,7 @@ public partial class UpdateLeaveRequestCommandTests
 
         var command = new UpdateLeaveRequestCommand(
             LeaveRequestId: 1,
-            NewStatus: "Approved");
+            Status: "Approved");
 
         _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(expectedLeaveRequest);
@@ -89,7 +89,7 @@ public partial class UpdateLeaveRequestCommandTests
         //Arrange
         var command = new UpdateLeaveRequestCommand(
             LeaveRequestId: 1,
-            NewStatus: "Approved");
+            Status: "Approved");
 
         _leaveRequestRepository.GetByIdAsync(Arg.Any<LeaveRequestId>())
             .Returns(Task.FromResult<LeaveRequest?>(null));

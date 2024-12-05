@@ -21,13 +21,13 @@ public class UpdateLeaveRequestCommandValidator : AbstractValidator<UpdateLeaveR
                 .WithMessage(LeaveRequestErrorMessages.LeaveTypeNotSupported)
             .When(command => command.LeaveType is not null);
 
-        RuleFor(command => command.NewStatus)
+        RuleFor(command => command.Status)
             .Must((command, newStatus) =>
             {
                 return LeaveRequestStatus.IsValidLeaveRequestStatus(newStatus);
             })
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidLeaveRequestStatus)
                 .WithMessage(LeaveRequestErrorMessages.LeaveRequestStatusNotSupported)
-            .When(command => command.NewStatus is not null);
+            .When(command => command.Status is not null);
     }
 }

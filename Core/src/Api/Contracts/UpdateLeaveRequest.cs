@@ -4,7 +4,7 @@ public record UpdateLeaveRequest(
     LeaveType? LeaveType,
     DateTime? StartDate,
     DateTime? EndDate,
-    LeaveStatus? NewStatus,
+    LeaveStatus? Status,
     string? Comment,
     string? DecisionReason);
 

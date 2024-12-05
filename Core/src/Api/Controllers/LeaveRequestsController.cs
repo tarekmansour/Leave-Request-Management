@@ -63,7 +63,7 @@ public class LeaveRequestsController : ControllerBase
             LeaveType: updateLeaveRequest.LeaveType?.ToString(),
             StartDate: updateLeaveRequest.StartDate,
             EndDate: updateLeaveRequest.EndDate,
-            NewStatus: updateLeaveRequest.NewStatus?.ToString(),
+            Status: updateLeaveRequest.Status?.ToString(),
             Comment: updateLeaveRequest.Comment,
             DecisionReason: updateLeaveRequest.DecisionReason);
 

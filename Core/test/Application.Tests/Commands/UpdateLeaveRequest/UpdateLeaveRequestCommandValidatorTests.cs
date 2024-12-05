@@ -29,7 +29,7 @@ public partial class UpdateLeaveRequestCommandTests
         //Arrange
         var command = new UpdateLeaveRequestCommand(
             LeaveRequestId: 1,
-            NewStatus: "done");
+            Status: "done");
 
         //Act
         var result = await _sut.Handle(command, CancellationToken.None);

@@ -64,7 +64,7 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
 
         _logger.LogInformation("Successfully updated leave request '{LeaveRequestId}' with new status '{NewStatus}'.",
                 command.LeaveRequestId,
-                command.NewStatus);
+                command.Status);
 
         return Result<UpdatedLeaveRequestDto>.Success(new UpdatedLeaveRequestDto(
             Id: existingLeaveRequest.Id.Value,
@@ -87,9 +87,9 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         if (command.EndDate.HasValue)
             leaveRequest.UpdateEndDate(command.EndDate.Value);
 
-        if (!string.IsNullOrWhiteSpace(command.NewStatus))
+        if (!string.IsNullOrWhiteSpace(command.Status))
             leaveRequest.UpdateStatus(
-                LeaveRequestStatus.FromString(command.NewStatus),
+                LeaveRequestStatus.FromString(command.Status),
                 new UserId(_userContext.UserId),
                 command.DecisionReason);
     }
