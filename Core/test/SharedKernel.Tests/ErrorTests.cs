@@ -11,7 +11,7 @@ public class ErrorTests
         var description = "description";
 
         // Act
-        var result = new Error(code, description);
+        var result = new Error(code, description, ErrorType.Failure);
 
         // Assert
         result.Code.Should().Be(code);
@@ -27,5 +27,6 @@ public class ErrorTests
         // Assert
         error.Code.Should().Be(string.Empty);
         error.Description.Should().Be(string.Empty);
+        error.Type.Should().Be(ErrorType.Failure);
     }
 }

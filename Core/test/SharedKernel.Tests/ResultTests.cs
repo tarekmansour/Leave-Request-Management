@@ -19,7 +19,7 @@ public class ResultTests
     public void Failure_Should_IndicateFailure_And_ContainSpecifiedError()
     {
         // Arrange
-        var error = new Error("error_code", "An error occurred");
+        var error = new Error("error_code", "An error occurred", ErrorType.Validation);
 
         // Act
         var result = Result.Failure(error);
@@ -34,7 +34,7 @@ public class ResultTests
     public void Success_WithError_ShouldThrowException()
     {
         // Arrange
-        var error = new Error("error_code", "An error occurred");
+        var error = new Error("error_code", "An error occurred", ErrorType.Failure);
 
         // Act
         var act = () => new Result(true, error);
@@ -75,7 +75,7 @@ public class ResultTests
     public void GenericFailure_Should_IndicateFailure_And_ContainSpecifiedError()
     {
         // Arrange
-        var error = new Error("error_code", "A generic error occurred");
+        var error = new Error("error_code", "A generic error occurred", ErrorType.Failure);
 
         // Act
         var result = Result<string>.Failure(error);

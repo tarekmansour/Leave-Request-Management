@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Domain.Entities;
 using Domain.Errors;
-using Domain.Exceptions;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 using FluentAssertions;
@@ -90,7 +89,7 @@ public class LeaveRequestTests
         Action act = () => leaveRequest.UpdateStatus(newStatus, decidedBy, null);
 
         // Assert
-        act.Should().Throw<LeaveRequestException>()
+        act.Should().Throw<InvalidOperationException>()
             .WithMessage(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
     }
 
