@@ -1,18 +1,4 @@
----
-title: LeaveManagement Api v1
-language_tabs:
-  - http: HTTP
-language_clients:
-  - http: ""
-toc_footers: []
-includes: []
-search: true
-highlight_theme: darkula
-headingLevel: 2
-
----
-
-<h1 id="leavemanagement-api">LeaveManagement Api v1</h1>
+# LeaveManagement Api v1
 
 The Leave Management API is designed to facilitate the management of leave requests within an organization.
 
