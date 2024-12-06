@@ -1,12 +1,6 @@
 # Leave Management API
 
-The Leave Management API is designed to facilitate the management of leave requests within an organization. This API provides a comprehensive set of endpoints that allow employees, managers, and HR personnel to efficiently handle various aspects of leave management, including `requesting`, `approving`, and `tracking` leave requests in real time.
-
-## Endpoints
-
-- [Submit new leave request](./Docs/Submit-Leave-Request.md)
-- [Validate leave request](./Docs/Validate-Leave-Request.md)
-- [Track the status of my leave requests.](./Docs/Track-Leave-Request-Status.md)
+You find herer the API endpoints documentation: [API doc](./Docs/API-doc.md).
 
 ## Architecture
 

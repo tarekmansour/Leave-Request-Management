@@ -63,6 +63,8 @@ public static class DependencyInjection
             });
             c.SupportNonNullableReferenceTypes();
             c.EnableAnnotations();
+            c.CustomSchemaIds(type => $"{type.DeclaringType?.Name ?? type.Namespace?.Split('.').Last()}_{type.Name}");
+
         });
 
         return services;

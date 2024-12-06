@@ -34,23 +34,23 @@ public static class MappingExtensions
 
         return new LeaveRequestsCollectionDto(
             Count: leaveRequests.Count,
-            Items: (IReadOnlyCollection<LeaveRequest>?)leaveRequests.Select(x =>
+            Items: (IReadOnlyCollection<LeaveRequestDto>?)leaveRequests.Select(x =>
             {
                 return x.Status == LeaveRequestStatus.Rejected
-                    ? new LeaveRequest(
-                        id: x.Id,
-                        leaveType: x.LeaveType,
-                        startDate: x.StartDate,
-                        endDate: x.EndDate,
-                        status: x.Status,
-                        decidedBy: x.DecidedBy,
-                        decisionReason: x.DecisionReason)
-                    : new LeaveRequest(
-                        id: x.Id,
-                        leaveType: x.LeaveType,
-                        startDate: x.StartDate,
-                        endDate: x.EndDate,
-                        status: x.Status);
+                    ? new LeaveRequestDto(
+                        Id: x.Id.Value,
+                        LeaveType: x.LeaveType.Value,
+                        StartDate: x.StartDate,
+                        EndDate: x.EndDate,
+                        Status: x.Status.Value,
+                        DecidedBy: x.DecidedBy.Value,
+                        DecisionReason: x.DecisionReason)
+                    : new LeaveRequestDto(
+                        Id: x.Id.Value,
+                        LeaveType: x.LeaveType.Value,
+                        StartDate: x.StartDate,
+                        EndDate: x.EndDate,
+                        Status: x.Status.Value);
             }).ToArray());
     }
 }
