@@ -37,13 +37,10 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         var validationResult = await _commandValidator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning(
-                "Register login request is not valid with the following error codes '{ErrorCodes}'.",
+            _logger.LogWarning("Register login request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
-            return Result<int>.Failure(
-                validationResult.Errors
-                .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
+            return Result<int>.Failure(validationResult.Errors.Select(error => new Error(error.ErrorCode, error.ErrorMessage, ErrorType.Validation)));
         }
 
         var userExists = await _userRepository.ExistsByEmailAsync(command.Email, cancellationToken);
@@ -51,7 +48,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, R
         if (userExists)
         {
             _logger.LogWarning("The user email is not unique with email '{Email}'.", command.Email);
-            return Result<int>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserEmailNotUnique));
+            return Result<int>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserEmailNotUnique, ErrorType.Validation));
         }
 
         var createdUserId = await _userRepository.CreateAsync(

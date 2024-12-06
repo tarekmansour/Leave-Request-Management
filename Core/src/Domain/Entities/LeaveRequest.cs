@@ -1,5 +1,4 @@
 ﻿using Domain.Errors;
-using Domain.Exceptions;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
 
@@ -94,13 +93,13 @@ public sealed class LeaveRequest
         string? decisionReason)
     {
         if (newStatus != LeaveRequestStatus.Approved && newStatus != LeaveRequestStatus.Rejected)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.UnsupportedStatus);
+            throw new InvalidOperationException(LeaveRequestErrorMessages.UnsupportedStatus);
 
         if (decidedBy == null)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.ValidUserShouldApproveLeaveRequest);
+            throw new InvalidOperationException(LeaveRequestErrorMessages.ValidUserShouldApproveLeaveRequest);
 
         if (newStatus == LeaveRequestStatus.Rejected && decisionReason is null)
-            throw new LeaveRequestException(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
+            throw new InvalidOperationException(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
 
         Status = newStatus;
         DecidedBy = decidedBy;

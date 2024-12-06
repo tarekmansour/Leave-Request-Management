@@ -1,4 +1,5 @@
 ﻿using Api.Contracts;
+using Api.Extensions;
 using Application.Commands.CreateLeaveRequest;
 using Application.Dtos;
 using Application.Queries.GetLeaveRequestsByUser;
@@ -39,9 +40,7 @@ public class UserLeaveRequestsController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsFailure
-                ? BadRequest(result.Errors)
-                : Ok(result.Value);
+        return result.ToApiResponse();
     }
 
     [HttpGet]
@@ -53,10 +52,9 @@ public class UserLeaveRequestsController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var query = new GetLeaveRequestsByUserQuery(status);
+
         var result = await _mediator.Send(query, cancellationToken);
 
-        return result.IsFailure
-                ? BadRequest(result.Errors)
-                : Ok(result.Value);
+        return result.ToApiResponse();
     }
 }

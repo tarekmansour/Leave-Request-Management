@@ -1,4 +1,5 @@
 ﻿using Api.Contracts;
+using Api.Extensions;
 using Application.Commands.UpdateLeaveRequest;
 using Application.Dtos;
 using Asp.Versioning;
@@ -6,7 +7,6 @@ using Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
@@ -41,10 +41,6 @@ public class AdminLeaveRequestsController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsFailure
-            ? BadRequest(result.Errors is IEnumerable<Error> errorList && errorList.Any()
-                ? errorList
-                : result.Error)
-            : Ok(result.Value);
+        return result.ToApiResponse();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Domain.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Api;
@@ -42,7 +41,6 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
         {
             ArgumentException => (StatusCodes.Status400BadRequest, "Bad request"),
             InvalidOperationException => (StatusCodes.Status400BadRequest, "Bad request"),
-            LeaveRequestException => (StatusCodes.Status400BadRequest, "Bad request"),
             _ => (StatusCodes.Status500InternalServerError, "Internal Error Server")
         };
     }

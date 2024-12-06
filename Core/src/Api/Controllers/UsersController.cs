@@ -1,10 +1,10 @@
 ﻿using Api.Contracts;
+using Api.Extensions;
 using Application.Commands.UserLogin;
 using Application.Commands.UserRegister;
 using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SharedKernel;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Api.Controllers;
@@ -37,17 +37,14 @@ public class UsersController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsFailure
-            ? BadRequest(result.Errors is IEnumerable<Error> errorList && errorList.Any()
-                ? errorList
-                : result.Error)
-            : Ok(result.Value);
+        return result.ToApiResponse();
     }
 
     [HttpPost("login")]
     [SwaggerOperation(Summary = "Login to generate user JWT token.")]
     [SwaggerResponse(200, Type = typeof(string))]
     [SwaggerResponse(400, "Validation errors occurred.")]
+    [SwaggerResponse(404, "User not found.")]
     public async Task<IActionResult> Login(
         [FromBody] LoginUserRequest request,
         CancellationToken cancellationToken = default)
@@ -58,10 +55,6 @@ public class UsersController : ControllerBase
 
         var result = await _mediator.Send(command, cancellationToken);
 
-        return result.IsFailure
-            ? BadRequest(result.Errors is IEnumerable<Error> errorList && errorList.Any()
-                ? errorList
-                : result.Error)
-            : Ok(result.Value);
+        return result.ToApiResponse();
     }
 }

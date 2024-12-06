@@ -40,13 +40,10 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         var validationResult = await _commandValidator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning(
-                "Updating leave request is not valid with the following error codes '{ErrorCodes}'.",
+            _logger.LogWarning("Updating leave request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
-            return Result<UpdatedLeaveRequestDto>.Failure(
-                validationResult.Errors
-                .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
+            return Result<UpdatedLeaveRequestDto>.Failure(validationResult.Errors.Select(error => new Error(error.ErrorCode, error.ErrorMessage, ErrorType.Validation)));
         }
 
         var existingLeaveRequest = await _leaveRequestRepository.GetByIdAsync(new LeaveRequestId(command.LeaveRequestId), cancellationToken);
@@ -54,7 +51,11 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         if (existingLeaveRequest is null)
         {
             _logger.LogWarning("The leave request to update is not found for LeaveRequestId '{LeaveRequestId}'.", command.LeaveRequestId);
-            return Result<UpdatedLeaveRequestDto>.Failure(new Error(LeaveRequestErrorCodes.InvalidLeaveRequestId, LeaveRequestErrorMessages.NotFoundLeaveRequestToUpdate));
+
+            return Result<UpdatedLeaveRequestDto>.Failure(new Error(
+                LeaveRequestErrorCodes.InvalidLeaveRequestId,
+                LeaveRequestErrorMessages.NotFoundLeaveRequestToUpdate,
+                ErrorType.NotFound));
         }
 
         existingLeaveRequest.UpdateStatus(

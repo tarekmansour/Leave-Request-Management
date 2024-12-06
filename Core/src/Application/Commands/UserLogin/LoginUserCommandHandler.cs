@@ -37,13 +37,10 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
         var validationResult = await _commandValidator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning(
-                "Login user request is not valid with the following error codes '{ErrorCodes}'.",
+            _logger.LogWarning("Login user request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
-            return Result<string>.Failure(
-                validationResult.Errors
-                .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
+            return Result<string>.Failure(validationResult.Errors.Select(error => new Error(error.ErrorCode, error.ErrorMessage, ErrorType.Validation)));
         }
 
         var user = await _userRepository.GetByEmailAsync(command.Email, cancellationToken);
@@ -52,14 +49,14 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<
         {
             _logger.LogWarning("The user is not found with email '{Email}'.", command.Email);
 
-            return Result<string>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserNotFound));
+            return Result<string>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserNotFound, ErrorType.NotFound));
         }
 
         bool verified = _passwordHasher.Verify(command.Password, user.PasswordHash);
 
         if (!verified)
         {
-            return Result<string>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserNotFound));
+            return Result<string>.Failure(new Error(UserErrorCodes.InvalidUserEmail, UserErrorMessages.UserNotFound, ErrorType.Validation));
         }
 
         string token = _tokenProvider.GenerateToken(user);

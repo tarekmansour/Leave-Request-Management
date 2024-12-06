@@ -36,13 +36,10 @@ public class CreateLeaveRequestCommandHandler : IRequestHandler<CreateLeaveReque
         var validationResult = await _commandValidator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning(
-                "New leave request is not valid with the following error codes '{ErrorCodes}'.",
+            _logger.LogWarning("New leave request is not valid with the following error codes '{ErrorCodes}'.",
                 string.Join(", ", validationResult.Errors.Select(e => e.ErrorCode)));
 
-            return Result<int>.Failure(
-                validationResult.Errors
-                .Select(error => new Error(error.ErrorCode, error.ErrorMessage)));
+            return Result<int>.Failure(validationResult.Errors.Select(error => new Error(error.ErrorCode, error.ErrorMessage, ErrorType.Validation)));
         }
 
         var createdLeaveRequestId = await _leaveRequestRepository.CreateAsync(command.MapToLeaveRequest(_userContext.UserId), cancellationToken);
