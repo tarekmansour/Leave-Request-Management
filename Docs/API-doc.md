@@ -15,10 +15,7 @@ This API provides a comprehensive set of endpoints that allow employees, manager
 
 Update leave request status. Only users with `HR` admin roles can approve or reject a leave request.
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-Bearer
-</aside>
+To perform this operation, you must be authenticated with a `Bearer Token`.
 
 ```http
 PATCH /api/v1/AdminLeaveRequests/0 HTTP/1.1
@@ -37,8 +34,8 @@ Host: example.com
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|id|path|integer(int32)|true|The leave request to update Id.|
-|body|body|[UpdateLeaveRequest](#updateleaverequest)|true|None|
+|id|path|integer(int32)|true|The leave request Identifier to update.|
+|body|body|[UpdateLeaveRequest](#updateleaverequest)|true|A DTO request object.|
 
 #### UpdateLeaveRequest
 |Name|Type|Required|Description|
@@ -51,15 +48,15 @@ Host: example.com
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[UpdatedLeaveRequestDto](#updatedleaverequestdto)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|None|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden access.|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|Problem detail|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|Problem detail|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Forbidden access.|Problem detail|
 
 #### UpdatedLeaveRequestDto
 |Name|Type|Required|Description|
 |---|---|---|---|
 |id|integer(int32)|false|The updated leave request Id.|
-|submittedBy|integer(int32)|false|none|The user Id who submitted the leave request.|
+|submittedBy|integer(int32)|false|The user Id who submitted the leave request.|
 |leaveType|string|false|The leave type.|
 |startDate|string(date-time)|false|The start date.|
 |endDate|string(date-time)|false|The end date.|
@@ -97,10 +94,9 @@ Host: example.com
 
 Submits my new leave request. Each user has the right to submit a new leave request.
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-Bearer
-</aside>
+By default each new leave request is created with a `pending` [LeaveStatus](#leavestatus).
+
+To perform this operation, you must be authenticated with a `Bearer Token`.
 
 ```http
 POST /api/v1/me/UserLeaveRequests HTTP/1.1
@@ -120,7 +116,7 @@ Host: example.com
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|body|body|[CreateLeaveRequest](#createleaverequest)|false|The leave request details.|
+|body|body|[CreateLeaveRequest](#createleaverequest)|false|The leave request details DTO.|
 
 #### CreateLeaveRequest
 |Name|Type|Required|Description|
@@ -133,6 +129,15 @@ Host: example.com
 #### LeaveType
 |Value|Description|
 |---|---|
+|Off|Days off for different needs.|
+|SickLeave|Sick leave.|
+|Maternity|Maternity.|
+|Paternity|Paternity.|
+|MarriageOrPACS|Marriage of PACS.|
+
+#### LeaveStatus
+|Value|Description|
+|---|---|
 |Pending|By default each new leave request is pending.|
 |Approved|Approved by an HR admin role.|
 |Rejected|Rejected by an HR admin role.|
@@ -142,8 +147,8 @@ Host: example.com
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|integer|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|None|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|Problem detail|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|Problem detail|
 
 > Example responses
 
@@ -156,10 +161,7 @@ Host: example.com
 
 Get my list of leave requests. The User have the possibility to filter by status.
 
-<aside class="warning">
-To perform this operation, you must be authenticated by means of one of the following methods:
-Bearer
-</aside>
+To perform this operation, you must be authenticated with a `Bearer Token`.
 
 ```http
 GET /api/v1/me/UserLeaveRequests HTTP/1.1
@@ -173,20 +175,20 @@ Host: example.com
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|status|query|string|false|The leave request status|
+|status|query|string|false|The leave request status value.|
 
 <h3>Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[LeaveRequestsCollectionDto](#leaverequestscollectiondto)|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized user.|Problem detail.|
 
 #### LeaveRequestsCollectionDto
 |Name|Type|Required|Description|
 |---|---|---|---|
 |count|integer(int32)|false|The total count of items in the list.|
-|items|[[LeaveRequestDto](#schemadtos_leaverequestdto)]|false|none|
+|items|[[LeaveRequestDto](#schemadtos_leaverequestdto)]|false|The lis of the user leave requests.|
 
 #### LeaveRequestDto
 
@@ -198,7 +200,7 @@ Host: example.com
 |endDate|string(date-time)|false|none|
 |status|string|false|none|
 |comment|string¦null|false|none|
-|decidedBy|integer(int32)¦null|false|none|
+|decidedBy|integer(int32)¦null|false|The user Id who validated the request.|
 |decisionReason|string¦null|false|none|
 
 > Example responses
@@ -222,7 +224,7 @@ Host: example.com
 
 ### `POST /api/v1/Users/register`
 
-Register new user.
+Register new user with its authorized roles.
 
 ```http
 POST /api/v1/Users/register HTTP/1.1
@@ -242,7 +244,7 @@ Host: example.com
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|body|body|[RegisterUserRequest](#schemacontracts_registeruserrequest)|false|New user information.|
+|body|body|[RegisterUserRequest](#schemacontracts_registeruserrequest)|false|New user registration DTO.|
 
 > Body parameter
 
@@ -263,7 +265,7 @@ Host: example.com
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|integer|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation errors occurred.|Problem detail|
 
 > Example responses
 
