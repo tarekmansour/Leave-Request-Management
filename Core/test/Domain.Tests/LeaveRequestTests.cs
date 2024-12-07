@@ -10,7 +10,7 @@ namespace Domain.Tests;
 [ExcludeFromCodeCoverage]
 public class LeaveRequestTests
 {
-    [Fact(DisplayName = "New leave request always with pending status")]
+    [Fact(DisplayName = "New leave request always created with pending status")]
     public void NewLeaveRequest_ShouldBeOn_PendingStatus()
     {
         // Arrange
@@ -30,7 +30,7 @@ public class LeaveRequestTests
         newLeaveRequest.Status.Should().Be(LeaveRequestStatus.Pending);
     }
 
-    [Fact(DisplayName = "New Leave request with start date greater than the end date")]
+    [Fact(DisplayName = "New Leave request with end date should be after the start date")]
     public void NewLeaveRequest_ShouldValidate_EntryDates()
     {
         // Arrange
@@ -51,7 +51,7 @@ public class LeaveRequestTests
             .WithMessage(LeaveRequestErrorMessages.EndDateShouldBeAfterStartDate);
     }
 
-    [Fact(DisplayName = "New Leave request with start date in the past")]
+    [Fact(DisplayName = "New Leave request should not be with start date in the past")]
     public void NewLeaveRequest_ShouldValidate_StartDate()
     {
         // Arrange
@@ -72,8 +72,8 @@ public class LeaveRequestTests
             .WithMessage(LeaveRequestErrorMessages.StartDateShouldNotBeInPast);
     }
 
-    [Fact(DisplayName = "Throw exception when reject request without decision reason")]
-    public void UpdateEndDate_ShouldThrowException_WhenRejectedRequestWithoutReasonProvided()
+    [Fact(DisplayName = "Reject request should be with decision reason")]
+    public void RejectLeaveRequest_ShouldBe_WithDecisionReason()
     {
         // Arrange
         var leaveRequest = new LeaveRequest(
@@ -93,8 +93,8 @@ public class LeaveRequestTests
             .WithMessage(LeaveRequestErrorMessages.ForRejectedRequestsReasonShouldBeProvided);
     }
 
-    [Fact(DisplayName = "should update status when decided by a valid user")]
-    public void UpdateStatus_ShouldUpdateStatus_WhenDecidedByValidUser()
+    [Fact(DisplayName = "Update status should be decided by a valid user")]
+    public void UpdateStatus_ShouldUpdateStatus_ByValidUser()
     {
         // Arrange
         var leaveRequest = new LeaveRequest(
