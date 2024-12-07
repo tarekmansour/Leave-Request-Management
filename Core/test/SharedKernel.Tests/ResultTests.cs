@@ -1,6 +1,9 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 
 namespace SharedKernel.Tests;
+
+[ExcludeFromCodeCoverage]
 public class ResultTests
 {
     [Fact(DisplayName = "Success Result should indicate success and have no error")]

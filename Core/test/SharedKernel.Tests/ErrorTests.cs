@@ -1,6 +1,9 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentAssertions;
 
 namespace SharedKernel.Tests;
+
+[ExcludeFromCodeCoverage]
 public class ErrorTests
 {
     [Fact(DisplayName = "New error object")]

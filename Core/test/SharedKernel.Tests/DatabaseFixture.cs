@@ -1,8 +1,10 @@
-﻿using Infrastructure;
+﻿using System.Diagnostics.CodeAnalysis;
+using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace SharedKernel.Tests;
 
+[ExcludeFromCodeCoverage]
 public abstract class DatabaseFixture : IDisposable
 {
     protected readonly ApplicationDbContext _dbContext;

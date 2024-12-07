@@ -1,8 +1,12 @@
 # Leave Management API
 
-You find herer the API endpoints documentation: [API doc](./Docs/API-doc.md).
+Checkout API documentation to know how each endpoints work: [API doc](./Docs/API-doc.md).
 
 ## Architecture
+
+- The API is built using `Hexagonal clean architecture` and following the `Domain Driven Design` principles.
+- 
+
 
 DDD
 clean archi

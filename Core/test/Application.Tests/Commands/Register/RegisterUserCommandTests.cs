@@ -1,4 +1,5 @@
-﻿using Application.Abstractions;
+﻿using System.Diagnostics.CodeAnalysis;
+using Application.Abstractions;
 using Application.Commands.UserRegister;
 using Domain.Repositories;
 using FluentValidation;
@@ -9,6 +10,8 @@ using NSubstitute;
 using SharedKernel.Tests;
 
 namespace Application.Tests.Commands.Register;
+
+[ExcludeFromCodeCoverage]
 public partial class RegisterUserCommandTests : DatabaseFixture
 {
     private readonly ILogger<RegisterUserCommandHandler> _logger;

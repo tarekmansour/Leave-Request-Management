@@ -1,7 +1,10 @@
-﻿using Application.Commands.UserLogin;
+﻿using System.Diagnostics.CodeAnalysis;
+using Application.Commands.UserLogin;
 using FluentAssertions;
 
 namespace Application.Tests.Commands.Login;
+
+[ExcludeFromCodeCoverage]
 public partial class LoginUserCommandTests
 {
     [Fact(DisplayName = "new LoginUserCommandHandler with null repository")]
