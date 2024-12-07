@@ -83,7 +83,7 @@ public partial class UpdateLeaveRequestCommandTests
         result.Value.Status.Should().Be(LeaveRequestStatus.Approved.ToString());
     }
 
-    [Fact(DisplayName = "Handle returns failure")]
+    [Fact(DisplayName = "Handle returns failure with a none existing leave request")]
     public async Task Handle_Should_ReturnsFailure()
     {
         //Arrange

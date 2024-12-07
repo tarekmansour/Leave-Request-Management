@@ -55,7 +55,7 @@ public partial class RegisterUserCommandTests
         result.IsSuccess.Should().BeTrue();
     }
 
-    [Fact(DisplayName = "Handle returns failure result")]
+    [Fact(DisplayName = "Handle returns failure result with existing user")]
     public async Task Handle_Should_ReturnsFailureResult()
     {
         //Arrange

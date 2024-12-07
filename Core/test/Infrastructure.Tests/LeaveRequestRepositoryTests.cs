@@ -136,7 +136,7 @@ public class LeaveRequestRepositoryTests : DatabaseFixture
         var result = await _sut.GetAllByUserAsync(new UserId(1), null);
 
         // Assert
-        result.Count().Should().Be(0);
+        result.Count.Should().Be(0);
     }
 
     [Fact(DisplayName = "List leave requests by user with status filter")]

@@ -6,7 +6,7 @@ namespace Application.Tests.Commands.CreateLeaveRequest;
 
 public partial class CreateLeaveRequestCommandTests
 {
-    [Fact(DisplayName = "CreateLeaveRequestCommand with invalid properties")]
+    [Fact(DisplayName = "CreateLeaveRequestCommand with invalid leave type")]
     public async Task WithInvalidProps_Should_ReturnsError()
     {
         //Arrange
