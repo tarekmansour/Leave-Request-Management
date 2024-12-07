@@ -27,9 +27,5 @@ public class CreateLeaveRequestCommandValidator : AbstractValidator<CreateLeaveR
             .NotEmpty()
                 .WithErrorCode(LeaveRequestErrorCodes.InvalidEndDate)
                 .WithMessage(LeaveRequestErrorMessages.EndDateShouldNotBeNullOrEmpty);
-
-        //TODO: check if user exists or not.
-
-        //TODO: validate if leave request is duplicated
     }
 }

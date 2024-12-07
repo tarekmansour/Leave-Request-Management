@@ -34,7 +34,7 @@ public class GetLeaveRequestsByUserQueryHandler : IRequestHandler<GetLeaveReques
             status: LeaveRequestStatus.FromNullableString(query.Status),
             cancellationToken);
 
-        _logger.LogInformation("The list of leave requests for user '{UserId}' was retrieved with count of '{Count}' .",
+        _logger.LogInformation("The list of leave requests for user '{UserId}' was retrieved successfully with total items of '{Count}' .",
             _userContext.UserId,
             leaveRequests.Count);
 
