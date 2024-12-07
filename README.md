@@ -45,4 +45,4 @@ This architecture diagram visually represents the system's components, their rel
 
 ## Bonus Question
 
-- Explore this [documentation](./Docs/AKS-migration_solution.md) to understand the solution.
+- Explore this [documentation](./Docs/AKS-migration_solution.md) to review the solution.
