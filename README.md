@@ -1,31 +1,42 @@
 # Leave Management API
 
-Checkout API documentation to know how each endpoints work: [API doc](./Docs/API-doc.md).
+Explore the full API documentation to understand how each endpoint works: [API doc](./Docs/API-doc.md).
 
-## Architecture
+## Overview
 
-- The API is built using `Hexagonal clean architecture` and following the `Domain Driven Design` principles.
-- 
+The Leave Management API is designed to manage employee leave requests and approvals efficiently. It is implemented with robust architectural principles, providing flexibility and testability.
+
+### Key Features:
+- Built using `Hexagonal clean architecture` and following the `Domain Driven Design` principles.
+- Employs an `in-memory database` for simplified setup, isolated data handling, and flexible testing environments.
+- Achieves `80%+` test coverage for critical functionalities, ensuring high reliability.
+
+    ![alt text](image.png)
+
+## Architecture diagram
 
 
-DDD
-clean archi
-EF core
-unit and integration tests
-=> code coverage: 80% with screenshot
 
-real time implemetation
+## Running Locally
 
-## Implementation
+1. Open the project and start the API (`.csproj`) in your development environment.
+2. Use `Swagger UI` to interact with the API:
+  - Register new users with different Roles `HR` or `Employee`.
+  - Generate authentication tokens.
+  - Submit new leave request for an employee.
+  - Validate leave request.
+  - Retrieve and filter user leave requests.
 
-To simplify the test case, the Leave Management API is build with `inMemory` database for easy setup, data isolation, and flexibility.
+## Future Enhancements
 
-## Local running
+1. **Leave Balance Verification**
 
-- Just start the API project and play with Swagger.
+    Implement a feature to track and calculate the remaining leave days for employees based on the maximum allowable days for each leave type.
+
+2. **Real-Time Notifications**
+
+    Introduce a real-time notification mechanism to subscribe to updates on leave request approvals or rejections, ensuring timely communication.
 
 ## Bonus Question
 
-## Future improvements
-
-- Add a leave balance verification feature to calculate the number of leave days an employee has taken according to the maximum allowable days for each leave type.
+- Explore this [documentation](./Docs/AKS-migration_solution.md) to understand the solution.
