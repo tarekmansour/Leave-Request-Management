@@ -11,11 +11,13 @@ The Leave Management API is designed to manage employee leave requests and appro
 - Employs an `in-memory database` for simplified setup, isolated data handling, and flexible testing environments.
 - Achieves `80%+` test coverage for critical functionalities, ensuring high reliability.
 
-    ![alt text](image.png)
+    ![test coverage](image.png)
 
 ## Architecture diagram
 
+This architecture diagram visually represents the system's components, their relationships, and their interactions, emphasizing separation of concerns, scalability, and alignment with business requirements.
 
+![archi](LeaveManagement-Archi.png)
 
 ## Running Locally
 
