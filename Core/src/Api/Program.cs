@@ -5,6 +5,8 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 var configuration = builder.Configuration;
 
 builder.Services.AddSwaggerGenWithAuth();
@@ -15,6 +17,8 @@ builder.Services
     .AddInfrastructure(configuration);
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

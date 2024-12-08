@@ -33,6 +33,8 @@ This architecture diagram visually represents the system's components, their rel
   - Validate leave request.
   - Retrieve and filter user leave requests.
 
+> Optional: you also run the [Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) `Monitoring.AppHost` project for local monitoring and real time logs.
+
 ## Future Enhancements
 
 1. **Leave Balance Verification**
