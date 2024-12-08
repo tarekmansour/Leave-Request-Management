@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Application.Abstractions;
+using Application.Abstractions.Authentication;
 using Application.Queries.GetLeaveRequestsByUser;
 using Domain.Repositories;
 using FluentAssertions;

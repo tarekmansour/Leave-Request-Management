@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Authentication;
 using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;

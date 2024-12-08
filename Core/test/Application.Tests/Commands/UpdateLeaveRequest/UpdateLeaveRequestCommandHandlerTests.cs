@@ -1,4 +1,5 @@
 ﻿using Application.Commands.UpdateLeaveRequest;
+using Application.Dtos;
 using Domain.Entities;
 using Domain.ValueObjects;
 using Domain.ValueObjects.Identifiers;
@@ -17,7 +18,8 @@ public partial class UpdateLeaveRequestCommandTests
             _validator,
             null!,
             _unitOfWork,
-            _userContext);
+            _userContext,
+            _messageSender);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -32,7 +34,8 @@ public partial class UpdateLeaveRequestCommandTests
             _validator,
             _leaveRequestRepository,
             _unitOfWork,
-            _userContext);
+            _userContext,
+            _messageSender);
 
         // Assert
         act.Should().NotThrow();
@@ -47,7 +50,8 @@ public partial class UpdateLeaveRequestCommandTests
             _validator,
             _leaveRequestRepository,
             null!,
-            _userContext);
+            _userContext,
+            _messageSender);
 
         // Assert
         act.Should().Throw<ArgumentException>();
@@ -81,6 +85,9 @@ public partial class UpdateLeaveRequestCommandTests
         //Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Status.Should().Be(LeaveRequestStatus.Approved.ToString());
+        _messageSender.Received(1).SendMessage(new LeaveRequestStatusChangedDto(
+            result.Value.Id,
+            result.Value.Status));
     }
 
     [Fact(DisplayName = "Handle returns failure with a none existing leave request")]

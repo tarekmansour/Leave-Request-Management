@@ -9,6 +9,8 @@ The Leave Management API is designed to manage employee leave requests and appro
 ### Key Features:
 - Built using `Hexagonal clean architecture` and following the `Domain Driven Design` principles.
 - Employs an `in-memory database` for simplified setup, isolated data handling, and flexible testing environments.
+- Implements local [RabbitMQ](https://www.rabbitmq.com/) message sending in the solution to prepare for future update leave requests `real-time notifications` in a front-end app.
+  - Enabling it to subscribe to previously sent message queues through `SignalR` configuration for example.
 - Achieves `80%+` test coverage for critical functionalities, ensuring high reliability.
 
     ![test coverage](./Docs/assets/Test-coverage.png)
@@ -16,24 +18,25 @@ The Leave Management API is designed to manage employee leave requests and appro
 ## Architecture diagram
 
 This architecture diagram visually represents the system's components, their relationships, and their interactions, emphasizing separation of concerns, scalability, and alignment with business requirements.
-
-![archi](./Docs/assets/App-Archi.png)
+    ![archi](./Docs/assets/App-Archi.png)
 
 ## Running Locally
 
 1. Open the project and review the unit tests to gain a deeper understanding of the domain primary use cases. Here is an example:
-
     ![alt text](./Docs/assets/Unit-tests.png)
-
 2. Start the API (`.csproj`) in your development environment.
-3. Use `Swagger Open API UI` to interact with the API. You can:
-  - Register new users with different Roles `HR` or `Employee`.
-  - Generate authentication tokens.
-  - Submit new leave request for an employee.
-  - Validate leave request.
-  - Retrieve and filter user leave requests.
+3. Use `Swagger Open API UI` to interact with the API. 
 
-> Optional: you also run the [Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) `Monitoring.AppHost` project for local monitoring and real time logs.
+### Monitoring
+- For app monitoring run the [Aspire](https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview) `Monitoring.AppHost` project for local monitoring and real time logs.
+
+### Message broker
+- For sending `update leave request messages`, use docker in your system to install RabbitMQ:
+   - `docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management`.
+   - here is an example of already sent queue messages:
+
+   ![message broker](./Docs/assets/queue-message.png)
+     
 
 ## Future Enhancements
 
@@ -43,7 +46,7 @@ This architecture diagram visually represents the system's components, their rel
 
 2. **Real-Time Notifications**
 
-    Introduce a real-time notification mechanism to subscribe to updates on leave request approvals or rejections, ensuring timely communication.
+    Introduce a real-time notification through [SignalR](https://learn.microsoft.com/en-us/gaming/playfab/features/real-time-notifications/signalr-hub) to subscribe on leave request approvals or rejections, ensuring timely communication.
 
 ## Bonus Question
 

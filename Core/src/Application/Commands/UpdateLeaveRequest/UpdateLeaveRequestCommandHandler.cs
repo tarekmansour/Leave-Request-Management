@@ -1,4 +1,5 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Authentication;
+using Application.Abstractions.Messaging;
 using Application.Dtos;
 using Domain.Errors;
 using Domain.Repositories;
@@ -18,19 +19,22 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
     private readonly ILeaveRequestRepository _leaveRequestRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserContext _userContext;
+    private readonly IMessageSender _messageSender;
 
     public UpdateLeaveRequestCommandHandler(
         ILogger<UpdateLeaveRequestCommandHandler> logger,
         IValidator<UpdateLeaveRequestCommand> commandValidator,
         ILeaveRequestRepository appointmentRepository,
         IUnitOfWork unitOfWork,
-        IUserContext userContext)
+        IUserContext userContext,
+        IMessageSender messageSender)
     {
         _logger = (ILogger)logger ?? NullLogger.Instance;
         _commandValidator = commandValidator ?? throw new ArgumentNullException(nameof(commandValidator));
         _leaveRequestRepository = appointmentRepository ?? throw new ArgumentNullException(nameof(appointmentRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        _messageSender = messageSender ?? throw new ArgumentNullException(nameof(messageSender));
     }
 
     public async Task<Result<UpdatedLeaveRequestDto>> Handle(UpdateLeaveRequestCommand command, CancellationToken cancellationToken)
@@ -68,6 +72,10 @@ public class UpdateLeaveRequestCommandHandler : IRequestHandler<UpdateLeaveReque
         _logger.LogInformation("Successfully updated leave request '{LeaveRequestId}' with new status '{NewStatus}'.",
                 command.LeaveRequestId,
                 command.Status);
+
+        _messageSender.SendMessage(new LeaveRequestStatusChangedDto(
+            existingLeaveRequest.Id.Value,
+            existingLeaveRequest.Status.Value));
 
         return Result<UpdatedLeaveRequestDto>.Success(existingLeaveRequest.MapToUpdatedLeaveRequestDto());
     }

@@ -1,4 +1,4 @@
-﻿namespace Application.Abstractions;
+﻿namespace Application.Abstractions.Authentication;
 public interface IUserContext
 {
     int UserId { get; }

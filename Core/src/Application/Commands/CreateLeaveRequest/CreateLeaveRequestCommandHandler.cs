@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Authentication;
 using Domain.Repositories;
 using FluentValidation;
 using MediatR;

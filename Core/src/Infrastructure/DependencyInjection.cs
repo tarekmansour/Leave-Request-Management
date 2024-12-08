@@ -2,9 +2,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.Abstractions;
+using Application.Abstractions.Authentication;
+using Application.Abstractions.Messaging;
 using Domain.Repositories;
 using Infrastructure.Authentication;
+using Infrastructure.Messaging;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,7 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration) =>
         services
-            .AddServices()
+            .AddServices(configuration)
             .AddInMemoryDatabase()
             .AddAuthenticationInternal(configuration)
             .AddAuthorization();
@@ -34,11 +36,17 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddServices(this IServiceCollection services)
+    private static IServiceCollection AddServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
+        var rabbitMqConfig = configuration.GetSection("RabbitMQ");
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddSingleton<IRabbitMqConnection>(new RabbitMqConnection(rabbitMqConfig["HostName"]));
+        services.AddScoped<IMessageSender, RabbitMqMessageSender>();
 
         return services;
     }

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Application.Abstractions;
+using Application.Abstractions.Authentication;
 using Application.Commands.UserRegister;
 using Domain.Repositories;
 using FluentValidation;

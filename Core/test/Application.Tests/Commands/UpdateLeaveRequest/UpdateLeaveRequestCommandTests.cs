@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Application.Abstractions;
+using Application.Abstractions.Authentication;
+using Application.Abstractions.Messaging;
 using Application.Commands.UpdateLeaveRequest;
 using Domain.Repositories;
 using Infrastructure;
@@ -18,6 +19,8 @@ public partial class UpdateLeaveRequestCommandTests : DatabaseFixture
     private readonly IUnitOfWork _unitOfWork;
     private readonly UpdateLeaveRequestCommandHandler _sut;
     private readonly IUserContext _userContext;
+    private readonly IMessageSender _messageSender;
+
 
     public UpdateLeaveRequestCommandTests()
     {
@@ -26,6 +29,13 @@ public partial class UpdateLeaveRequestCommandTests : DatabaseFixture
         _validator = new UpdateLeaveRequestCommandValidator();
         _unitOfWork = new UnitOfWork(_dbContext);
         _userContext = Substitute.For<IUserContext>();
-        _sut = new UpdateLeaveRequestCommandHandler(_logger, _validator, _leaveRequestRepository, _unitOfWork, _userContext);
+        _messageSender = Substitute.For<IMessageSender>();
+        _sut = new UpdateLeaveRequestCommandHandler(
+            _logger,
+            _validator,
+            _leaveRequestRepository,
+            _unitOfWork,
+            _userContext,
+            _messageSender);
     }
 }

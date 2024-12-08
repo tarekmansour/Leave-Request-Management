@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using Application.Abstractions;
+using Application.Abstractions.Authentication;
 
 namespace Infrastructure.Authentication;
 public sealed class PasswordHasher : IPasswordHasher

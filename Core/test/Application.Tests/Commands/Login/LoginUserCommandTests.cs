@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Authentication;
 using Application.Commands.UserLogin;
 using Domain.Repositories;
 using FluentValidation;

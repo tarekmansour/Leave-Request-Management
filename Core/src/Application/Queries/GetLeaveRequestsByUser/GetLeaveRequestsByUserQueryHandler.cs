@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Abstractions.Authentication;
 using Application.Dtos;
 using Domain.Repositories;
 using Domain.ValueObjects;
